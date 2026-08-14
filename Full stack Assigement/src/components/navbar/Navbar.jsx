@@ -1,56 +1,120 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FiSearch, FiShoppingCart, FiUser, FiChevronDown } from "react-icons/fi";
+import {
+  FiSearch,
+  FiShoppingCart,
+  FiUser,
+  FiChevronDown,
+  FiMenu,
+  FiX,
+} from "react-icons/fi";
+
 import "./Navbar.css";
 
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <nav className="navbar">
+    <>
+      <nav className="navbar">
 
-      {/* Logo */}
-      <Link to="/" className="logo">
-        SHOP.CO
-      </Link>
+        {/* Mobile Menu Button */}
+        <button
+          className="menu-btn"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <FiX /> : <FiMenu />}
+        </button>
 
-      {/* Navigation Links */}
-      <div className="nav-links">
-
-        <Link to="/shop" className="shop-link">
-          Shop
-          <FiChevronDown />
+        {/* Logo */}
+        <Link to="/" className="logo">
+          SHOP.CO
         </Link>
 
-        <Link to="/sale">On Sale</Link>
+        {/* Desktop Navigation */}
+        <div className="nav-links">
 
-        <Link to="/new-arrivals">New Arrivals</Link>
+          <Link to="/shop" className="shop-link">
+            Shop
+            <FiChevronDown />
+          </Link>
 
-        <Link to="/brands">Brands</Link>
+          <Link to="/sale">
+            On Sale
+          </Link>
 
-      </div>
+          <Link to="/new-arrivals">
+            New Arrivals
+          </Link>
 
-      {/* Search */}
-      <div className="search-box">
-        <FiSearch />
+          <Link to="/brands">
+            Brands
+          </Link>
 
-        <input
-          type="text"
-          placeholder="Search for products..."
-        />
-      </div>
+        </div>
 
-      {/* Actions */}
-      <div className="nav-actions">
+        {/* Search */}
+        <div className="search-box">
 
-        <Link to="/cart">
-          <FiShoppingCart />
-        </Link>
+          <FiSearch />
 
-        <Link to="/account">
-          <FiUser />
-        </Link>
+          <input
+            type="text"
+            placeholder="Search for products..."
+          />
 
-      </div>
+        </div>
 
-    </nav>
+        {/* Actions */}
+        <div className="nav-actions">
+
+          <Link to="/cart">
+            <FiShoppingCart />
+          </Link>
+
+          <Link to="/account">
+            <FiUser />
+          </Link>
+
+        </div>
+
+      </nav>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="mobile-menu">
+
+          <Link
+            to="/shop"
+            onClick={() => setMenuOpen(false)}
+          >
+            Shop
+          </Link>
+
+          <Link
+            to="/sale"
+            onClick={() => setMenuOpen(false)}
+          >
+            On Sale
+          </Link>
+
+          <Link
+            to="/new-arrivals"
+            onClick={() => setMenuOpen(false)}
+          >
+            New Arrivals
+          </Link>
+
+          <Link
+            to="/brands"
+            onClick={() => setMenuOpen(false)}
+          >
+            Brands
+          </Link>
+
+        </div>
+      )}
+    </>
   );
 };
 

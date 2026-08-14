@@ -6,11 +6,16 @@
     align-items: center;
 
     padding: 0 68px;
+
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
     background-color: #fff;
 }
 
+
+/* =========================
+   LOGO
+========================= */
 
 .logo {
     color: #000;
@@ -26,6 +31,7 @@
     white-space: nowrap;
 }
 
+
 /* =========================
    NAV LINKS
 ========================= */
@@ -40,6 +46,7 @@
 .nav-links a {
     display: flex;
     align-items: center;
+
     gap: 5px;
 
     color: #000;
@@ -51,10 +58,15 @@
     white-space: nowrap;
 }
 
+.nav-links a:hover {
+    opacity: 0.6;
+}
+
 .shop-link svg {
     width: 13px;
     height: 13px;
 }
+
 
 /* =========================
    SEARCH
@@ -85,6 +97,7 @@
     height: 18px;
 
     color: #000;
+
     opacity: 0.5;
 
     flex-shrink: 0;
@@ -108,6 +121,7 @@
     opacity: 0.4;
 }
 
+
 /* =========================
    ACTION ICONS
 ========================= */
@@ -128,15 +142,57 @@
     text-decoration: none;
 }
 
+.nav-actions a:hover {
+    opacity: 0.6;
+}
+
 .nav-actions svg {
     width: 20px;
     height: 20px;
 }
 
-/* =================================
+
+/* =========================
+   MOBILE MENU BUTTON
+========================= */
+
+.menu-btn {
+    display: none;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #000;
+
+    cursor: pointer;
+
+    padding: 0;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-btn svg {
+    width: 23px;
+    height: 23px;
+}
+
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+.mobile-menu {
+    display: none;
+}
+
+
+/* =========================
    TABLET
-   1024px and below
-================================= */
+   1024px
+========================= */
 
 @media (max-width: 1024px) {
 
@@ -146,6 +202,7 @@
 
     .logo {
         font-size: 25px;
+
         margin-right: 25px;
     }
 
@@ -161,13 +218,13 @@
         margin-left: 18px;
         margin-right: 18px;
     }
-
 }
 
-/* =================================
+
+/* =========================
    SMALL TABLET
-   900px and below
-================================= */
+   900px
+========================= */
 
 @media (max-width: 900px) {
 
@@ -177,6 +234,7 @@
 
     .logo {
         font-size: 24px;
+
         margin-right: 20px;
     }
 
@@ -188,13 +246,13 @@
         margin-left: 15px;
         margin-right: 15px;
     }
-
 }
 
-/* =================================
+
+/* =========================
    MOBILE
-   768px and below
-================================= */
+   768px
+========================= */
 
 @media (max-width: 768px) {
 
@@ -206,27 +264,40 @@
         justify-content: space-between;
     }
 
+
+    /* Hamburger */
+
+    .menu-btn {
+        display: flex;
+    }
+
+
+    /* Logo */
+
     .logo {
         font-size: 24px;
 
-        margin-right: 0;
+        margin-right: auto;
+        margin-left: 15px;
     }
 
-    /* Hide desktop links */
+
+    /* Hide Desktop Links */
 
     .nav-links {
         display: none;
     }
+
 
     /* Search */
 
     .search-box {
         flex: initial;
 
-        width: 42px;
+        width: 35px;
         height: 42px;
 
-        margin: 0 12px;
+        margin: 0 10px;
 
         padding: 0;
 
@@ -236,8 +307,8 @@
     }
 
     .search-box svg {
-        width: 22px;
-        height: 22px;
+        width: 21px;
+        height: 21px;
 
         opacity: 1;
     }
@@ -246,10 +317,11 @@
         display: none;
     }
 
-    /* Icons */
+
+    /* Actions */
 
     .nav-actions {
-        gap: 14px;
+        gap: 12px;
     }
 
     .nav-actions svg {
@@ -257,12 +329,50 @@
         height: 21px;
     }
 
+
+    /* Mobile Menu */
+
+    .mobile-menu {
+        display: flex;
+
+        flex-direction: column;
+
+        width: 100%;
+
+        background-color: #fff;
+
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+
+        padding: 8px 20px;
+    }
+
+    .mobile-menu a {
+        color: #000;
+
+        text-decoration: none;
+
+        font-size: 15px;
+
+        padding: 14px 0;
+
+        border-bottom: 1px solid #eee;
+    }
+
+    .mobile-menu a:last-child {
+        border-bottom: none;
+    }
+
+    .mobile-menu a:hover {
+        opacity: 0.6;
+    }
 }
 
-/* =================================
+
+/* =========================
    SMALL MOBILE
-   480px and below
-================================= */
+   480px
+========================= */
 
 @media (max-width: 480px) {
 
@@ -272,12 +382,19 @@
         padding: 0 15px;
     }
 
+    .menu-btn svg {
+        width: 21px;
+        height: 21px;
+    }
+
     .logo {
-        font-size: 22px;
+        font-size: 21px;
+
+        margin-left: 10px;
     }
 
     .search-box {
-        width: 35px;
+        width: 32px;
 
         margin: 0 5px;
     }
@@ -288,7 +405,7 @@
     }
 
     .nav-actions {
-        gap: 10px;
+        gap: 9px;
     }
 
     .nav-actions svg {
@@ -296,12 +413,22 @@
         height: 19px;
     }
 
+    .mobile-menu {
+        padding: 5px 15px;
+    }
+
+    .mobile-menu a {
+        font-size: 14px;
+
+        padding: 13px 0;
+    }
 }
 
-/* =================================
+
+/* =========================
    VERY SMALL MOBILE
-   360px and below
-================================= */
+   360px
+========================= */
 
 @media (max-width: 360px) {
 
@@ -311,10 +438,12 @@
 
     .logo {
         font-size: 20px;
+
+        margin-left: 8px;
     }
 
     .search-box {
-        margin: 0;
+        margin: 0 2px;
     }
 
     .nav-actions {
@@ -325,5 +454,4 @@
         width: 18px;
         height: 18px;
     }
-
 }
