@@ -1,0 +1,22 @@
+.announcement-bar {
+  width: 100%;
+  height: 40px;
+  background-color: #000;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.announcement-bar p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.announcement-bar p a {
+  color: #fff;
+  text-decoration: underline;
+  margin-left: 4px;
+}
