@@ -3,6 +3,7 @@
   height: 40px;
   background-color: #000;
   color: #fff;
+  
 
   display: flex;
   align-items: center;
@@ -12,7 +13,8 @@
 .announcement-bar p {
   margin: 0;
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 300;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .announcement-bar p a {
