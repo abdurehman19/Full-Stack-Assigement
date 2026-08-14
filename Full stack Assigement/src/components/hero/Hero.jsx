@@ -51,7 +51,7 @@ const Hero = () => {
       <div className="hero-image">
 
         <img
-          src="/images/hero-models.png"
+          src="src/assets/images/hero.png"
           alt="Fashion models"
         />
 
