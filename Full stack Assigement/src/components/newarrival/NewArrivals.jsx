@@ -48,7 +48,7 @@ function NewArrivals() {
 
   const products = [
     {
-      image: "/products/tshirt.png",
+      image: "src/assets/product/t shirt 2.jpeg",
       name: "T-shirt with Tape Details",
       rating: "4.5",
       reviews: "456",
@@ -56,7 +56,7 @@ function NewArrivals() {
     },
 
     {
-      image: "/products/jeans.png",
+      image: "src/assets/product/t shirt 4.jpeg",
       name: "Skinny Fit Jeans",
       rating: "3.5",
       reviews: "320",
@@ -66,7 +66,7 @@ function NewArrivals() {
     },
 
     {
-      image: "/products/shirt.png",
+      image: "src/assets/product/t shirt 2.jpeg",
       name: "Checkered Shirt",
       rating: "4.5",
       reviews: "410",
@@ -74,7 +74,7 @@ function NewArrivals() {
     },
 
     {
-      image: "/products/striped-shirt.png",
+      image: "src/assets/product/t shirt 4.jpeg",
       name: "Sleeve Striped T-shirt",
       rating: "4.5",
       reviews: "250",
@@ -86,7 +86,7 @@ function NewArrivals() {
     // 👇 Additional products
 
     {
-      image: "/products/product5.png",
+      image: "src/assets/product/t shirt 2.jpeg",
       name: "Vertical Striped Shirt",
       rating: "4.5",
       reviews: "300",
@@ -94,7 +94,7 @@ function NewArrivals() {
     },
 
     {
-      image: "/products/product6.png",
+      image: "src/assets/product/t shirt 4.jpeg",
       name: "Courage Graphic T-shirt",
       rating: "4.0",
       reviews: "220",
@@ -102,7 +102,7 @@ function NewArrivals() {
     },
 
     {
-      image: "/products/product7.png",
+      image: "src/assets/product/t shirt 2.jpeg",
       name: "Loose Fit Bermuda Shorts",
       rating: "4.5",
       reviews: "180",
@@ -110,7 +110,7 @@ function NewArrivals() {
     },
 
     {
-      image: "/products/product8.png",
+      image: "src/assets/product/t shirt 3.jpeg",
       name: "Faded Skinny Jeans",
       rating: "4.5",
       reviews: "390",
