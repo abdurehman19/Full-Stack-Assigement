@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "./NewArrivals.css";
 
-function ProductCard({ image, name, rating, reviews, price, oldPrice, discount }) {
+function ProductCard({
+  image,
+  name,
+  rating,
+  reviews,
+  price,
+  oldPrice,
+  discount,
+}) {
   return (
     <div className="product-card">
 
@@ -12,7 +20,7 @@ function ProductCard({ image, name, rating, reviews, price, oldPrice, discount }
       <h3>{name}</h3>
 
       <div className="product-rating">
-        <span>★ ★ ★ ★ ★</span>
+        <span>★★★★★</span>
         <small>{rating}/5</small>
         <small>{reviews}</small>
       </div>
@@ -20,9 +28,7 @@ function ProductCard({ image, name, rating, reviews, price, oldPrice, discount }
       <div className="product-price">
         <strong>${price}</strong>
 
-        {oldPrice && (
-          <del>${oldPrice}</del>
-        )}
+        {oldPrice && <del>${oldPrice}</del>}
 
         {discount && (
           <span className="discount">
@@ -38,6 +44,8 @@ function ProductCard({ image, name, rating, reviews, price, oldPrice, discount }
 
 function NewArrivals() {
 
+  const [showAll, setShowAll] = useState(false);
+
   const products = [
     {
       image: "/products/tshirt.png",
@@ -46,6 +54,7 @@ function NewArrivals() {
       reviews: "456",
       price: "120",
     },
+
     {
       image: "/products/jeans.png",
       name: "Skinny Fit Jeans",
@@ -55,6 +64,7 @@ function NewArrivals() {
       oldPrice: "260",
       discount: "-20%",
     },
+
     {
       image: "/products/shirt.png",
       name: "Checkered Shirt",
@@ -62,6 +72,7 @@ function NewArrivals() {
       reviews: "410",
       price: "180",
     },
+
     {
       image: "/products/striped-shirt.png",
       name: "Sleeve Striped T-shirt",
@@ -71,16 +82,60 @@ function NewArrivals() {
       oldPrice: "160",
       discount: "-30%",
     },
+
+    // 👇 Additional products
+
+    {
+      image: "/products/product5.png",
+      name: "Vertical Striped Shirt",
+      rating: "4.5",
+      reviews: "300",
+      price: "212",
+    },
+
+    {
+      image: "/products/product6.png",
+      name: "Courage Graphic T-shirt",
+      rating: "4.0",
+      reviews: "220",
+      price: "145",
+    },
+
+    {
+      image: "/products/product7.png",
+      name: "Loose Fit Bermuda Shorts",
+      rating: "4.5",
+      reviews: "180",
+      price: "80",
+    },
+
+    {
+      image: "/products/product8.png",
+      name: "Faded Skinny Jeans",
+      rating: "4.5",
+      reviews: "390",
+      price: "210",
+    },
   ];
+
+
+  // Pehle 4 products
+  // View All ke baad saare products
+
+  const visibleProducts = showAll
+    ? products
+    : products.slice(0, 4);
+
 
   return (
     <section className="new-arrivals">
 
       <h2>NEW ARRIVALS</h2>
 
+
       <div className="products-grid">
 
-        {products.map((product, index) => (
+        {visibleProducts.map((product, index) => (
           <ProductCard
             key={index}
             {...product}
@@ -89,9 +144,14 @@ function NewArrivals() {
 
       </div>
 
-      <button className="view-all">
-        View All
+
+      <button
+        className="view-all"
+        onClick={() => setShowAll(!showAll)}
+      >
+        {showAll ? "Show Less" : "View All"}
       </button>
+
 
       <div className="section-line"></div>
 
