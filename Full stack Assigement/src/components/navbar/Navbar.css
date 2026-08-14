@@ -1,32 +1,29 @@
 .navbar {
-  width: 100%;
-  min-height: 64px;
+    width: 100%;
+    min-height: 64px;
 
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  padding: 0 68px;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 0 68px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
-  background-color: #fff;
+    background-color: #fff;
 }
 
-/* =========================
-   LOGO
-========================= */
 
 .logo {
-  color: #000;
-  text-decoration: none;
+    color: #000;
+    text-decoration: none;
 
-  font-size: 28px;
-  font-weight: 900;
+    font-size: 28px;
+    font-weight: 900;
 
-  letter-spacing: -1.5px;
+    letter-spacing: -1.5px;
 
-  margin-right: 38px;
+    margin-right: 38px;
 
-  white-space: nowrap;
+    white-space: nowrap;
 }
 
 /* =========================
@@ -34,29 +31,29 @@
 ========================= */
 
 .nav-links {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  gap: 24px;
+    gap: 24px;
 }
 
 .nav-links a {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 
-  color: #000;
-  text-decoration: none;
+    color: #000;
+    text-decoration: none;
 
-  font-size: 13px;
-  font-weight: 400;
+    font-size: 13px;
+    font-weight: 400;
 
-  white-space: nowrap;
+    white-space: nowrap;
 }
 
 .shop-link svg {
-  width: 13px;
-  height: 13px;
+    width: 13px;
+    height: 13px;
 }
 
 /* =========================
@@ -64,51 +61,51 @@
 ========================= */
 
 .search-box {
-  height: 40px;
+    height: 40px;
 
-  flex: 1;
+    flex: 1;
 
-  margin-left: 28px;
-  margin-right: 28px;
+    margin-left: 28px;
+    margin-right: 28px;
 
-  border-radius: 24px;
+    border-radius: 24px;
 
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  padding: 0 15px;
+    padding: 0 15px;
 
-  min-width: 150px;
+    min-width: 150px;
 }
 
 .search-box svg {
-  width: 18px;
-  height: 18px;
+    width: 18px;
+    height: 18px;
 
-  color: #000;
-  opacity: 0.5;
+    color: #000;
+    opacity: 0.5;
 
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 .search-box input {
-  width: 100%;
+    width: 100%;
 
-  border: none;
-  outline: none;
+    border: none;
+    outline: none;
 
-  background: transparent;
+    background: transparent;
 
-  margin-left: 10px;
+    margin-left: 10px;
 
-  font-size: 13px;
+    font-size: 13px;
 }
 
 .search-box input::placeholder {
-  color: #000;
-  opacity: 0.4;
+    color: #000;
+    opacity: 0.4;
 }
 
 /* =========================
@@ -116,24 +113,24 @@
 ========================= */
 
 .nav-actions {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  gap: 16px;
+    gap: 16px;
 }
 
 .nav-actions a {
-  color: #000;
+    color: #000;
 
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .nav-actions svg {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
 /* =================================
@@ -143,27 +140,27 @@
 
 @media (max-width: 1024px) {
 
-  .navbar {
-    padding: 0 35px;
-  }
+    .navbar {
+        padding: 0 35px;
+    }
 
-  .logo {
-    font-size: 25px;
-    margin-right: 25px;
-  }
+    .logo {
+        font-size: 25px;
+        margin-right: 25px;
+    }
 
-  .nav-links {
-    gap: 16px;
-  }
+    .nav-links {
+        gap: 16px;
+    }
 
-  .nav-links a {
-    font-size: 12px;
-  }
+    .nav-links a {
+        font-size: 12px;
+    }
 
-  .search-box {
-    margin-left: 18px;
-    margin-right: 18px;
-  }
+    .search-box {
+        margin-left: 18px;
+        margin-right: 18px;
+    }
 
 }
 
@@ -174,23 +171,23 @@
 
 @media (max-width: 900px) {
 
-  .navbar {
-    padding: 0 25px;
-  }
+    .navbar {
+        padding: 0 25px;
+    }
 
-  .logo {
-    font-size: 24px;
-    margin-right: 20px;
-  }
+    .logo {
+        font-size: 24px;
+        margin-right: 20px;
+    }
 
-  .nav-links {
-    gap: 12px;
-  }
+    .nav-links {
+        gap: 12px;
+    }
 
-  .search-box {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
+    .search-box {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
 
 }
 
@@ -201,64 +198,64 @@
 
 @media (max-width: 768px) {
 
-  .navbar {
-    min-height: 60px;
+    .navbar {
+        min-height: 60px;
 
-    padding: 0 20px;
+        padding: 0 20px;
 
-    justify-content: space-between;
-  }
+        justify-content: space-between;
+    }
 
-  .logo {
-    font-size: 24px;
+    .logo {
+        font-size: 24px;
 
-    margin-right: 0;
-  }
+        margin-right: 0;
+    }
 
-  /* Hide desktop links */
+    /* Hide desktop links */
 
-  .nav-links {
-    display: none;
-  }
+    .nav-links {
+        display: none;
+    }
 
-  /* Search */
+    /* Search */
 
-  .search-box {
-    flex: initial;
+    .search-box {
+        flex: initial;
 
-    width: 42px;
-    height: 42px;
+        width: 42px;
+        height: 42px;
 
-    margin: 0 12px;
+        margin: 0 12px;
 
-    padding: 0;
+        padding: 0;
 
-    justify-content: center;
+        justify-content: center;
 
-    background-color: transparent;
-  }
+        background-color: transparent;
+    }
 
-  .search-box svg {
-    width: 22px;
-    height: 22px;
+    .search-box svg {
+        width: 22px;
+        height: 22px;
 
-    opacity: 1;
-  }
+        opacity: 1;
+    }
 
-  .search-box input {
-    display: none;
-  }
+    .search-box input {
+        display: none;
+    }
 
-  /* Icons */
+    /* Icons */
 
-  .nav-actions {
-    gap: 14px;
-  }
+    .nav-actions {
+        gap: 14px;
+    }
 
-  .nav-actions svg {
-    width: 21px;
-    height: 21px;
-  }
+    .nav-actions svg {
+        width: 21px;
+        height: 21px;
+    }
 
 }
 
@@ -269,35 +266,35 @@
 
 @media (max-width: 480px) {
 
-  .navbar {
-    min-height: 58px;
+    .navbar {
+        min-height: 58px;
 
-    padding: 0 15px;
-  }
+        padding: 0 15px;
+    }
 
-  .logo {
-    font-size: 22px;
-  }
+    .logo {
+        font-size: 22px;
+    }
 
-  .search-box {
-    width: 35px;
+    .search-box {
+        width: 35px;
 
-    margin: 0 5px;
-  }
+        margin: 0 5px;
+    }
 
-  .search-box svg {
-    width: 20px;
-    height: 20px;
-  }
+    .search-box svg {
+        width: 20px;
+        height: 20px;
+    }
 
-  .nav-actions {
-    gap: 10px;
-  }
+    .nav-actions {
+        gap: 10px;
+    }
 
-  .nav-actions svg {
-    width: 19px;
-    height: 19px;
-  }
+    .nav-actions svg {
+        width: 19px;
+        height: 19px;
+    }
 
 }
 
@@ -308,25 +305,25 @@
 
 @media (max-width: 360px) {
 
-  .navbar {
-    padding: 0 10px;
-  }
+    .navbar {
+        padding: 0 10px;
+    }
 
-  .logo {
-    font-size: 20px;
-  }
+    .logo {
+        font-size: 20px;
+    }
 
-  .search-box {
-    margin: 0;
-  }
+    .search-box {
+        margin: 0;
+    }
 
-  .nav-actions {
-    gap: 7px;
-  }
+    .nav-actions {
+        gap: 7px;
+    }
 
-  .nav-actions svg {
-    width: 18px;
-    height: 18px;
-  }
+    .nav-actions svg {
+        width: 18px;
+        height: 18px;
+    }
 
 }
