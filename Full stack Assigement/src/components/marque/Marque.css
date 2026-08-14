@@ -1,0 +1,135 @@
+/* =========================
+   MARQUE
+========================= */
+
+.marque {
+    width: 100%;
+
+    background: #000;
+
+    padding: 35px 0;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.marque-container {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    gap: 40px;
+
+    padding: 0 50px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   LOGOS
+========================= */
+
+.marque-container img {
+    width: 130px;
+    height: 35px;
+
+    object-fit: contain;
+
+    filter: brightness(0) invert(1);
+
+    opacity: 0.95;
+
+    transition: 0.2s ease;
+}
+
+.marque-container img:hover {
+    opacity: 1;
+
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+    .marque {
+        padding: 28px 0;
+    }
+
+    .marque-container {
+        gap: 25px;
+
+        padding: 0 30px;
+    }
+
+    .marque-container img {
+        width: 105px;
+        height: 30px;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .marque {
+        padding: 25px 15px;
+
+        overflow: hidden;
+    }
+
+    .marque-container {
+        padding: 0;
+
+        gap: 25px;
+
+        justify-content: space-between;
+
+        overflow-x: auto;
+
+        scrollbar-width: none;
+    }
+
+    .marque-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .marque-container img {
+        width: 85px;
+        height: 28px;
+
+        flex-shrink: 0;
+    }
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .marque {
+        padding: 22px 12px;
+    }
+
+    .marque-container {
+        gap: 22px;
+    }
+
+    .marque-container img {
+        width: 75px;
+        height: 25px;
+    }
+}
