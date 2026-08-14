@@ -1,0 +1,193 @@
+.new-arrivals {
+    width: 100%;
+    padding: 38px 7.2% 25px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.new-arrivals h2 {
+    margin: 0 0 22px;
+
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 900;
+
+    color: #000;
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+.products-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 12px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.product-card {
+    min-width: 0;
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.product-image {
+    width: 100%;
+    height: 185px;
+
+    background: #f0f0f0;
+
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+/* =========================
+   PRODUCT NAME
+========================= */
+
+.product-card h3 {
+    margin: 8px 0 3px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    color: #000;
+}
+
+
+/* =========================
+   RATING
+========================= */
+
+.product-rating {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+}
+
+.product-rating span {
+    color: #ffc107;
+
+    font-size: 10px;
+
+    letter-spacing: -2px;
+}
+
+.product-rating small {
+    color: #666;
+
+    font-size: 7px;
+}
+
+
+/* =========================
+   PRICE
+========================= */
+
+.product-price {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 3px;
+}
+
+.product-price strong {
+    font-size: 11px;
+
+    color: #000;
+}
+
+.product-price del {
+    font-size: 9px;
+
+    color: #999;
+}
+
+.discount {
+    padding: 3px 6px;
+
+    border-radius: 10px;
+
+    background: #ffe5e5;
+
+    color: #f33;
+
+    font-size: 7px;
+}
+
+
+/* =========================
+   VIEW ALL
+========================= */
+
+.view-all {
+    display: block;
+
+    width: 90px;
+    height: 25px;
+
+    margin: 17px auto 0;
+
+    border: 1px solid #eee;
+
+    border-radius: 20px;
+
+    background: #fff;
+
+    color: #000;
+
+    font-size: 7px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   LINE
+========================= */
+
+.section-line {
+    width: 100%;
+
+    height: 3px;
+
+    margin-top: 24px;
+
+    background: #9747ff;
+}
+
