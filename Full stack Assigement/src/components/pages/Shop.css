@@ -1,0 +1,482 @@
+.shop-page {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 25px 20px 80px;
+  box-sizing: border-box;
+}
+
+/* =========================
+   BREADCRUMB
+========================= */
+
+.shop-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 25px;
+  color: #777;
+}
+
+.shop-breadcrumb a {
+  color: #777;
+  text-decoration: none;
+}
+
+.shop-breadcrumb strong {
+  color: #111;
+}
+
+
+/* =========================
+   LAYOUT
+========================= */
+
+.shop-layout {
+  display: grid;
+  grid-template-columns: 245px 1fr;
+  gap: 35px;
+  align-items: start;
+}
+
+
+/* =========================
+   FILTERS
+========================= */
+
+.shop-filters {
+  border: 1px solid #e5e5e5;
+  border-radius: 16px;
+  padding: 22px;
+  background: #fff;
+  position: sticky;
+  top: 20px;
+}
+
+.filter-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-title-row h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.clear-filter {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #777;
+  font-size: 12px;
+}
+
+.filter-section {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-section:last-of-type {
+  border-bottom: none;
+}
+
+.filter-section h4 {
+  margin: 0 0 15px;
+  font-size: 15px;
+}
+
+
+/* Categories */
+
+.filter-category {
+  width: 100%;
+  border: none;
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  color: #777;
+  cursor: pointer;
+  text-align: left;
+}
+
+.filter-category.active {
+  color: #111;
+  font-weight: 600;
+}
+
+
+/* Price */
+
+.price-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.price-range {
+  width: 100%;
+  cursor: pointer;
+}
+
+
+/* Colors */
+
+.color-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.filter-color {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  position: relative;
+}
+
+.filter-color.selected {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+
+/* Sizes */
+
+.size-filter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.filter-size {
+  border: none;
+  background: #f3f3f3;
+  border-radius: 20px;
+  padding: 8px 11px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.filter-size.selected {
+  background: #111;
+  color: white;
+}
+
+
+/* Dress style */
+
+.dress-style {
+  width: 100%;
+  border: none;
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  cursor: pointer;
+  color: #666;
+}
+
+.apply-filter {
+  width: 100%;
+  border: none;
+  border-radius: 30px;
+  background: #000;
+  color: #fff;
+  padding: 13px;
+  margin-top: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
+/* =========================
+   SHOP HEADING
+========================= */
+
+.shop-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.shop-heading h1 {
+  margin: 0 0 5px;
+  font-size: 32px;
+}
+
+.shop-heading p {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
+}
+
+.sort-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.sort-box select {
+  border: none;
+  font-weight: 600;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+
+/* =========================
+   PRODUCT GRID
+========================= */
+
+.shop-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px 18px;
+}
+
+.shop-product-card {
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.shop-product-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.shop-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.shop-product-card:hover
+.shop-product-image img {
+  transform: scale(1.04);
+}
+
+.shop-product-card h3 {
+  margin: 10px 0 6px;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.shop-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.shop-rating span {
+  letter-spacing: 1px;
+}
+
+.shop-rating small {
+  color: #555;
+}
+
+.shop-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.shop-price strong {
+  font-size: 17px;
+}
+
+.shop-price del {
+  color: #999;
+  font-size: 14px;
+}
+
+.shop-price span {
+  background: #ffe5e5;
+  color: #e00000;
+  border-radius: 15px;
+  padding: 4px 8px;
+  font-size: 10px;
+}
+
+
+/* =========================
+   NO PRODUCTS
+========================= */
+
+.no-products {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.no-products button {
+  background: #000;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 45px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.pagination > button {
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 8px;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+
+.pagination > button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 5px;
+}
+
+.page {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.page.active {
+  background: #000;
+  color: white;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+  .shop-layout {
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+  }
+
+  .shop-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+  .shop-page {
+    padding: 18px 14px 50px;
+  }
+
+  .shop-layout {
+    display: block;
+  }
+
+  .shop-filters {
+    position: static;
+    margin-bottom: 25px;
+  }
+
+  .shop-heading {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .shop-heading h1 {
+    font-size: 25px;
+  }
+
+  .sort-box {
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 11px;
+  }
+
+  .shop-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 10px;
+  }
+
+  .shop-product-card h3 {
+    font-size: 13px;
+  }
+
+  .shop-rating {
+    font-size: 10px;
+  }
+
+  .shop-price strong {
+    font-size: 15px;
+  }
+
+  .shop-price del {
+    font-size: 11px;
+  }
+
+  .shop-price span {
+    font-size: 8px;
+  }
+
+  .pagination {
+    gap: 10px;
+  }
+
+  .pagination > button {
+    font-size: 10px;
+    padding: 8px;
+  }
+
+  .page-numbers {
+    gap: 2px;
+  }
+
+  .page {
+    width: 27px;
+    height: 27px;
+    font-size: 11px;
+  }
+
+}

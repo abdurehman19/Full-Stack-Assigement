@@ -3,51 +3,101 @@ import { useParams, Link } from "react-router-dom";
 import products from "./Product.js";
 import "./ProductDetails.css";
 
+import { useCart } from "../pages/CartContext";
+
+
 const ProductDetails = () => {
+
   const { id } = useParams();
 
+  // ✅ IMPORTANT:
+  // useCart component ke ANDAR hona chahiye
+  const { addToCart } = useCart();
+
+
+  // Find product
   const product = products.find(
     (item) => item.id === Number(id)
   );
 
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("Large");
-  const [selectedColor, setSelectedColor] = useState(0);
-  const [quantity, setQuantity] = useState(1);
 
-  // Product ke paas agar future mein multiple images hon
-  // to wo bhi automatically handle ho jayengi.
+  // States
+  const [selectedImage, setSelectedImage] = useState(0);
+
+  const [selectedSize, setSelectedSize] =
+    useState("Large");
+
+  const [selectedColor, setSelectedColor] =
+    useState(0);
+
+  const [quantity, setQuantity] =
+    useState(1);
+
+
+  // Product images
   const productImages = product
     ? Array.isArray(product.image)
       ? product.image
       : [product.image]
     : [];
 
+
+  // Product not found
   if (!product) {
     return (
       <div className="product-not-found">
-        <h2>Product Not Found</h2>
-        <p>This product does not exist.</p>
+
+        <h2>
+          Product Not Found
+        </h2>
+
+        <p>
+          This product does not exist.
+        </p>
+
+        <Link to="/shop">
+          Back to Shop
+        </Link>
+
       </div>
     );
   }
 
+
   return (
     <main className="product-page">
+
 
       {/* =========================
           BREADCRUMB
       ========================= */}
 
       <div className="product-breadcrumb">
-        <span>Home</span>
+
+        <Link to="/">
+          Home
+        </Link>
+
         <span>/</span>
-        <span>Shop</span>
+
+        <Link to="/shop">
+          Shop
+        </Link>
+
         <span>/</span>
-        <span>{product.category}</span>
+
+        <span>
+          {product.category}
+        </span>
+
         <span>/</span>
-        <strong>{product.name}</strong>
+
+        <strong>
+          {product.name}
+        </strong>
+
       </div>
+
 
 
       {/* =========================
@@ -56,32 +106,48 @@ const ProductDetails = () => {
 
       <section className="product-main">
 
-        {/* Gallery */}
+
+        {/* =========================
+            PRODUCT GALLERY
+        ========================= */}
 
         <div className="product-gallery">
+
 
           {/* Thumbnails */}
 
           <div className="product-thumbnails">
 
-            {productImages.map((image, index) => (
-              <button
-                key={index}
-                className={
-                  selectedImage === index
-                    ? "thumbnail active"
-                    : "thumbnail"
-                }
-                onClick={() => setSelectedImage(index)}
-              >
-                <img
-                  src={image}
-                  alt={`${product.name} ${index + 1}`}
-                />
-              </button>
-            ))}
+            {productImages.map(
+              (image, index) => (
+
+                <button
+                  key={index}
+                  type="button"
+                  className={
+                    selectedImage === index
+                      ? "thumbnail active"
+                      : "thumbnail"
+                  }
+                  onClick={() =>
+                    setSelectedImage(index)
+                  }
+                >
+
+                  <img
+                    src={image}
+                    alt={`${product.name} ${
+                      index + 1
+                    }`}
+                  />
+
+                </button>
+
+              )
+            )}
 
           </div>
+
 
 
           {/* Main Image */}
@@ -89,7 +155,9 @@ const ProductDetails = () => {
           <div className="product-main-image">
 
             <img
-              src={productImages[selectedImage]}
+              src={
+                productImages[selectedImage]
+              }
               alt={product.name}
             />
 
@@ -98,13 +166,20 @@ const ProductDetails = () => {
         </div>
 
 
+
         {/* =========================
-            PRODUCT INFO
+            PRODUCT INFORMATION
         ========================= */}
 
         <div className="product-info">
 
-          <h1>{product.name}</h1>
+
+          {/* Product Name */}
+
+          <h1>
+            {product.name}
+          </h1>
+
 
 
           {/* Rating */}
@@ -124,6 +199,7 @@ const ProductDetails = () => {
             </span>
 
           </div>
+
 
 
           {/* Price */}
@@ -149,13 +225,19 @@ const ProductDetails = () => {
           </div>
 
 
+
           {/* Description */}
 
           <p className="product-description">
-            {product.description}
+
+            {product.description ||
+              "This product is made with high quality materials and designed for everyday comfort and style."}
+
           </p>
 
+
           <div className="product-divider"></div>
+
 
 
           {/* =========================
@@ -164,32 +246,42 @@ const ProductDetails = () => {
 
           <div className="product-option">
 
-            <h4>Select Color</h4>
+            <h4>
+              Select Color
+            </h4>
 
             <div className="color-options">
 
-              {product.colors.map((color, index) => (
+              {product.colors &&
+                product.colors.map(
+                  (color, index) => (
 
-                <button
-                  key={index}
-                  className={
-                    selectedColor === index
-                      ? "color selected"
-                      : "color"
-                  }
-                  style={{
-                    backgroundColor: color,
-                  }}
-                  onClick={() =>
-                    setSelectedColor(index)
-                  }
-                />
+                    <button
+                      key={index}
+                      type="button"
+                      className={
+                        selectedColor === index
+                          ? "color selected"
+                          : "color"
+                      }
+                      style={{
+                        backgroundColor: color,
+                      }}
+                      onClick={() =>
+                        setSelectedColor(index)
+                      }
+                      aria-label={`Color ${
+                        index + 1
+                      }`}
+                    />
 
-              ))}
+                  )
+                )}
 
             </div>
 
           </div>
+
 
 
           {/* =========================
@@ -200,9 +292,11 @@ const ProductDetails = () => {
 
             <div className="size-heading">
 
-              <h4>Choose Size</h4>
+              <h4>
+                Choose Size
+              </h4>
 
-              <button>
+              <button type="button">
                 Size Guide →
               </button>
 
@@ -211,27 +305,32 @@ const ProductDetails = () => {
 
             <div className="size-options">
 
-              {product.sizes.map((size) => (
+              {product.sizes &&
+                product.sizes.map(
+                  (size) => (
 
-                <button
-                  key={size}
-                  className={
-                    selectedSize === size
-                      ? "size active"
-                      : "size"
-                  }
-                  onClick={() =>
-                    setSelectedSize(size)
-                  }
-                >
-                  {size}
-                </button>
+                    <button
+                      key={size}
+                      type="button"
+                      className={
+                        selectedSize === size
+                          ? "size active"
+                          : "size"
+                      }
+                      onClick={() =>
+                        setSelectedSize(size)
+                      }
+                    >
+                      {size}
+                    </button>
 
-              ))}
+                  )
+                )}
 
             </div>
 
           </div>
+
 
 
           {/* =========================
@@ -240,9 +339,13 @@ const ProductDetails = () => {
 
           <div className="product-cart-row">
 
+
+            {/* Quantity */}
+
             <div className="quantity">
 
               <button
+                type="button"
                 onClick={() =>
                   setQuantity((q) =>
                     q > 1 ? q - 1 : 1
@@ -252,11 +355,14 @@ const ProductDetails = () => {
                 −
               </button>
 
+
               <span>
                 {quantity}
               </span>
 
+
               <button
+                type="button"
                 onClick={() =>
                   setQuantity((q) => q + 1)
                 }
@@ -267,14 +373,44 @@ const ProductDetails = () => {
             </div>
 
 
-            <button className="add-cart">
+
+            {/* =========================
+                ADD TO CART
+            ========================= */}
+
+            <button
+              type="button"
+              className="add-cart"
+              onClick={() => {
+
+                addToCart(
+                  product,
+                  quantity,
+                  selectedSize,
+                  product.colors
+                    ? product.colors[selectedColor]
+                    : null
+                );
+
+                alert(
+                  "Product added to cart!"
+                );
+
+              }}
+            >
               Add to Cart
             </button>
 
           </div>
 
 
-          <button className="buy-now">
+
+          {/* Buy Now */}
+
+          <button
+            type="button"
+            className="buy-now"
+          >
             Buy Now
           </button>
 
@@ -283,27 +419,39 @@ const ProductDetails = () => {
       </section>
 
 
+
       {/* =========================
           PRODUCT DETAILS
       ========================= */}
 
       <section className="product-tabs">
 
+
         <div className="tabs-header">
 
-          <button className="tab active">
+          <button
+            type="button"
+            className="tab active"
+          >
             Product Details
           </button>
 
-          <button className="tab">
+          <button
+            type="button"
+            className="tab"
+          >
             Rating & Reviews
           </button>
 
-          <button className="tab">
+          <button
+            type="button"
+            className="tab"
+          >
             FAQs
           </button>
 
         </div>
+
 
 
         <div className="product-details-content">
@@ -313,39 +461,58 @@ const ProductDetails = () => {
           </h2>
 
           <p>
-            {product.description}
+            {product.description ||
+              "High quality product designed for comfort, durability and everyday style."}
           </p>
+
 
 
           <div className="specifications">
 
+
             <div>
-              <span>Category</span>
+              <span>
+                Category
+              </span>
+
               <strong>
                 {product.category}
               </strong>
             </div>
 
+
             <div>
-              <span>Material</span>
+              <span>
+                Material
+              </span>
+
               <strong>
                 100% Cotton
               </strong>
             </div>
 
+
             <div>
-              <span>Fit</span>
+              <span>
+                Fit
+              </span>
+
               <strong>
                 Regular Fit
               </strong>
             </div>
 
+
             <div>
-              <span>Availability</span>
+              <span>
+                Availability
+              </span>
+
               <strong>
                 In Stock
               </strong>
             </div>
+
 
           </div>
 
@@ -354,11 +521,13 @@ const ProductDetails = () => {
       </section>
 
 
+
       {/* =========================
           REVIEWS
       ========================= */}
 
       <section className="reviews-section">
+
 
         <div className="reviews-heading">
 
@@ -366,11 +535,15 @@ const ProductDetails = () => {
             All Reviews
           </h2>
 
-          <button className="write-review">
+          <button
+            type="button"
+            className="write-review"
+          >
             Write a Review
           </button>
 
         </div>
+
 
 
         <div className="reviews-grid">
@@ -380,36 +553,39 @@ const ProductDetails = () => {
             "Very comfortable and the fitting is perfect.",
             "The product looks exactly like the pictures.",
             "Really happy with the quality and design.",
-          ].map((review, index) => (
+          ].map(
+            (review, index) => (
 
-            <div
-              className="review-card"
-              key={index}
-            >
+              <div
+                className="review-card"
+                key={index}
+              >
 
-              <div className="review-stars">
-                ★★★★★
+                <div className="review-stars">
+                  ★★★★★
+                </div>
+
+                <strong>
+                  Verified Customer ✓
+                </strong>
+
+                <p>
+                  {review}
+                </p>
+
+                <small>
+                  Posted recently
+                </small>
+
               </div>
 
-              <strong>
-                Verified Customer ✓
-              </strong>
-
-              <p>
-                {review}
-              </p>
-
-              <small>
-                Posted recently
-              </small>
-
-            </div>
-
-          ))}
+            )
+          )}
 
         </div>
 
       </section>
+
 
 
       {/* =========================
@@ -427,7 +603,8 @@ const ProductDetails = () => {
 
           {products
             .filter(
-              (item) => item.id !== product.id
+              (item) =>
+                item.id !== product.id
             )
             .slice(0, 4)
             .map((item) => (
@@ -474,8 +651,10 @@ const ProductDetails = () => {
 
       </section>
 
+
     </main>
   );
 };
+
 
 export default ProductDetails;

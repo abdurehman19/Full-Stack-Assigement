@@ -9,16 +9,23 @@ import {
   FiX,
 } from "react-icons/fi";
 
+import { useCart } from "../../components/pages/CartContext";
+
 import "./Navbar.css";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const { cartCount } = useCart();
+
   return (
     <>
       <nav className="navbar">
 
-        {/* Mobile Menu Button */}
+        {/* =========================
+            MOBILE MENU BUTTON
+        ========================= */}
+
         <button
           className="menu-btn"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -26,15 +33,26 @@ const Navbar = () => {
           {menuOpen ? <FiX /> : <FiMenu />}
         </button>
 
-        {/* Logo */}
+
+        {/* =========================
+            LOGO
+        ========================= */}
+
         <Link to="/" className="logo">
           SHOP.CO
         </Link>
 
-        {/* Desktop Navigation */}
+
+        {/* =========================
+            DESKTOP NAVIGATION
+        ========================= */}
+
         <div className="nav-links">
 
-          <Link to="/shop" className="shop-link">
+          <Link
+            to="/shop"
+            className="shop-link"
+          >
             Shop
             <FiChevronDown />
           </Link>
@@ -53,7 +71,11 @@ const Navbar = () => {
 
         </div>
 
-        {/* Search */}
+
+        {/* =========================
+            SEARCH
+        ========================= */}
+
         <div className="search-box">
 
           <FiSearch />
@@ -65,14 +87,38 @@ const Navbar = () => {
 
         </div>
 
-        {/* Actions */}
+
+        {/* =========================
+            ACTIONS
+        ========================= */}
+
         <div className="nav-actions">
 
-          <Link to="/cart">
+          {/* CART */}
+
+          <Link
+            to="/cart"
+            className="cart-link"
+            aria-label="Shopping Cart"
+          >
+
             <FiShoppingCart />
+
+            {cartCount > 0 && (
+              <span className="cart-count">
+                {cartCount}
+              </span>
+            )}
+
           </Link>
 
-          <Link to="/account">
+
+          {/* ACCOUNT */}
+
+          <Link
+            to="/account"
+            aria-label="Account"
+          >
             <FiUser />
           </Link>
 
@@ -80,8 +126,13 @@ const Navbar = () => {
 
       </nav>
 
-      {/* Mobile Menu */}
+
+      {/* =========================
+          MOBILE MENU
+      ========================= */}
+
       {menuOpen && (
+
         <div className="mobile-menu">
 
           <Link
@@ -112,8 +163,27 @@ const Navbar = () => {
             Brands
           </Link>
 
+          {/* Mobile Cart */}
+
+          <Link
+            to="/cart"
+            onClick={() => setMenuOpen(false)}
+            className="mobile-cart-link"
+          >
+            Cart
+
+            {cartCount > 0 && (
+              <span className="mobile-cart-count">
+                {cartCount}
+              </span>
+            )}
+
+          </Link>
+
         </div>
+
       )}
+
     </>
   );
 };
