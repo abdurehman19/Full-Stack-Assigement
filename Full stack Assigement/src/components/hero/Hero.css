@@ -4,7 +4,7 @@
 
 .hero {
     width: 100%;
-    height: 570px;
+    height: 550px;
 
     display: flex;
 
@@ -203,7 +203,7 @@
    1024px
 ========================= */
 
-@media (max-width: 1024px) {
+@media (max-width: 1030px) {
 
     .hero {
         height: 500px;
@@ -229,6 +229,40 @@
     .stat h2 {
         font-size: 21px;
     }
+    .hero-image {
+        width: 100%;
+        height: 400px;
+
+        position: relative;
+        right: 80px;
+    
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        overflow: hidden;
+    }
+    .hero-image img {
+        width: 140%;
+        height: 100%;
+
+        max-width: none;
+
+        object-fit: contain;
+        object-position: bottom center;
+
+        transform: translateX(-5%);
+    }
+    .star-one {
+        top: 90px;
+        right: 0px;
+        font-size: 60px;
+    }
+    .star-two {
+        top: 200px;
+        left: 200px;
+        font-size: 35px;
+    }
 }
 
 
@@ -237,7 +271,7 @@
    900px
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 920px) {
 
     .hero-content h1 {
         font-size: 42px;
@@ -259,6 +293,29 @@
 
     .stat p {
         font-size: 9px;
+    }
+    .hero-image {
+        width: 100%;
+        height: 400px;
+
+        position: relative;
+        right: 80px;
+    
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        overflow: hidden;
+    }
+    .star-one {
+        top: 90px;
+        right: 0px;
+        font-size: 60px;
+    }
+    .star-two {
+        top: 200px;
+        left: 200px;
+        font-size: 35px;
     }
 }
 
@@ -428,12 +485,13 @@
     
     .hero-image {
         width: 100%;
-        height: 270px;
+        height: 400px;
 
-        margin-top: 5px;
-
+        margin-top: 1px;
+    /* right: 70px; */
+        
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
 
         position: relative;
@@ -448,9 +506,9 @@
 
         max-width: none;
 
-        object-fit: contain;
+        object-fit: cover;
 
-        object-position: bottom center;
+        object-position: center;
 
         transform: none;
     }
@@ -463,7 +521,7 @@
     .star-one {
         top: 15px;
 
-        right: 18px;
+        right: 58px;
 
         font-size: 45px;
     }
@@ -472,22 +530,9 @@
     .star-two {
         top: 80px;
 
-        left: 18px;
+        left: 78px;
 
         font-size: 28px;
-    }
-}
-
-@media (max-width: 800px) {
-    .hero-image {
-        height: 350px;
-        width: 100%
-        
-    }
-    .hero-image img {
-        width: 700px;
-        height: 100%;
-    
     }
 }
 
@@ -547,30 +592,73 @@
     }
 
 
-    .hero-image {
-        height: 100%;
-        right:  240px;
-        width: 600px;
-        
-    }
+   .hero-image {
+    width: 100%;
+    height: 200px;
+
+    position: relative;
+
+    /* left: 40px; */
+    /* right: auto; */
 
 
-    .star-one {
-        top: 14px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 
-        right: 25px;
-
-        font-size: 43px;
-    }
-
-
-    .star-two {
-        top: 80px;
-
-        font-size: 27px;
-    }
+    overflow: hidden;
 }
 
+.hero-image img {
+    width: 125%;
+    height: 100%;
+
+    max-width: none;
+
+    object-fit: cover;
+    object-position: center bottom;
+}
+.star-one {
+    top: 15px;
+    right: 60px;
+    font-size: 50px;
+}
+
+.star-two {
+    top: 75px;
+    left: 5px;
+    font-size: 35px;
+}
+}
+
+@media (max-width: 480px) {
+
+    .hero-image {
+        width: 100%;
+
+        position: relative;
+        right: 20px;
+    
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        overflow: hidden;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: 100%;
+
+        max-width: none;
+
+        object-fit: cover;
+        object-position: center bottom;
+
+        transform: none;
+    }
+}
 
 /* =========================
    VERY SMALL MOBILE
@@ -608,9 +696,86 @@
     .stat p {
         font-size: 6.5px;
     }
+  
 
+  
+}
+
+/* @media (max-width: 400px) {
 
     .hero-image {
-        height: 245px;
+        width: 100%;
+
+        position: relative;
+        right: 20px;
+    
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        overflow: hidden;
     }
+
+    .hero-image img {
+        width: 100%;
+        height: 100%;
+
+        max-width: none;
+
+        object-fit: cover;
+        object-position: center bottom;
+
+        transform: none;
+    }
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 880px) {
+
+    .hero-image {
+        width: 100%;
+        height: 400px;
+
+        position: relative;
+         left: 40px;
+        right: 10px;  
+        overflow: hidden;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+        object-position: 100% 100%;
+
+        transform: none;
+    }
+    
 }
