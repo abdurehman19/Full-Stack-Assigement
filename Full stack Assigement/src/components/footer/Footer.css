@@ -1,0 +1,351 @@
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    width: 100%;
+    padding: 45px 5% 20px;
+
+    background: #f2f0f1;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   FOOTER MAIN
+========================= */
+
+.footer-main {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1.2fr 1fr 1.3fr;
+
+    gap: 40px;
+}
+
+
+/* =========================
+   BRAND
+========================= */
+
+.footer-brand h2 {
+    margin: 0 0 15px;
+
+    color: #000;
+
+    font-size: 22px;
+    font-weight: 900;
+
+    letter-spacing: -0.5px;
+}
+
+.footer-brand p {
+    margin: 0;
+
+    color: #777;
+
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   SOCIAL ICONS
+========================= */
+
+.social-icons {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    margin-top: 18px;
+}
+
+.social-icons span {
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fff;
+    color: #000;
+
+    border: 1px solid #ddd;
+
+    border-radius: 50%;
+
+    font-size: 9px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+
+/* HOVER */
+
+.social-icons span:hover {
+    background: #000;
+    color: #fff;
+
+    border-color: #000;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   FOOTER COLUMNS
+========================= */
+
+.footer-column {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.footer-column h3 {
+    margin: 0 0 5px;
+
+    color: #000;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+.footer-column a {
+    color: #777;
+
+    text-decoration: none;
+
+    font-size: 9px;
+
+    transition: all 0.2s ease;
+}
+
+
+/* LINK HOVER */
+
+.footer-column a:hover {
+    color: #000;
+
+    transform: translateX(2px);
+}
+
+
+/* =========================
+   FOOTER BOTTOM
+========================= */
+
+.footer-bottom {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 30px auto 0;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #ddd;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.footer-bottom p {
+    margin: 0;
+
+    color: #888;
+
+    font-size: 8px;
+}
+
+
+/* =========================
+   PAYMENT METHODS
+========================= */
+
+.payment-methods {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+}
+
+.payment-methods span {
+    min-width: 35px;
+    height: 20px;
+
+    padding: 3px 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fff;
+
+    border: 1px solid #ddd;
+
+    border-radius: 4px;
+
+    color: #555;
+
+    font-size: 7px;
+
+    transition: 0.2s;
+}
+
+
+/* PAYMENT HOVER */
+
+.payment-methods span:hover {
+    background: #000;
+    color: #fff;
+
+    border-color: #000;
+}
+
+
+/* =========================
+   TABLET
+   768px
+========================= */
+
+@media (max-width: 768px) {
+
+    .footer {
+        padding: 35px 20px 20px;
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 30px 25px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+
+        gap: 15px;
+
+        text-align: center;
+    }
+}
+
+
+/* =========================
+   MOBILE
+   480px
+========================= */
+
+@media (max-width: 480px) {
+
+    .footer {
+        padding: 30px 16px 15px;
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 25px 15px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-brand h2 {
+        font-size: 20px;
+    }
+
+    .footer-brand p {
+        font-size: 8px;
+    }
+
+    .social-icons {
+        margin-top: 14px;
+    }
+
+    .footer-column {
+        gap: 8px;
+    }
+
+    .footer-column h3 {
+        font-size: 9px;
+    }
+
+    .footer-column a {
+        font-size: 8px;
+    }
+
+    .footer-bottom {
+        margin-top: 25px;
+    }
+
+    .footer-bottom p {
+        font-size: 7px;
+    }
+
+    .payment-methods {
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+}
+
+
+/* =========================
+   VERY SMALL MOBILE
+   360px
+========================= */
+
+@media (max-width: 360px) {
+
+    .footer {
+        padding: 25px 12px 15px;
+    }
+
+    .footer-main {
+        gap: 22px 10px;
+    }
+
+    .footer-brand h2 {
+        font-size: 18px;
+    }
+
+    .footer-column h3 {
+        font-size: 8px;
+    }
+
+    .footer-column a {
+        font-size: 7px;
+    }
+
+    .social-icons span {
+        width: 20px;
+        height: 20px;
+    }
+}
