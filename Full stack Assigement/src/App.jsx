@@ -12,6 +12,7 @@ import ProductDetails from "./components/product/ProductDetails";
 import { CartProvider } from "./components/pages/CartContext";
 import Newsletter from "./components/newsletter/Newsletter";
 import Footer from "./components/footer/Footer";
+import Checkout from "./components/checkout/Checkout";
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
             path="/cart"
             element={<Cart />}
           />
+          <Route
+  path="/checkout"
+  element={<Checkout />}
+/>
 
         </Routes>
         <Newsletter/>
