@@ -1,10 +1,10 @@
 import React from "react";
 import "./DressStyle.css";
 
-import Casual from "../../assets/dress style/casual.png";
-import Formal from "../../assets/dress style/formal.png";
-import Party from "../../assets/dress style/party.png";
-import Gym from "../../assets/dress style/gym.png";
+import Casual from "../../assets/dress style/image 11.png";
+import Formal from "../../assets/dress style/image 13.png";
+import Party from "../../assets/dress style/image 12.png";
+import Gym from "../../assets/dress style/image 14.png";
 
 function DressCard({ title, image, className }) {
   return (
@@ -24,31 +24,32 @@ function DressStyle() {
 
       <div className="dress-grid">
 
+    <div className="dress-row">
         <DressCard
-          title="Casual"
-          image={Casual}
-          className="casual"
+            title="Casual"
+            image={Casual}
         />
 
         <DressCard
-          title="Formal"
-          image={Formal}
-          className="formal"
+            title="Formal"
+            image={Formal}
+        />
+    </div>
+
+
+    <div className="dress-row">
+        <DressCard
+            title="Party"
+            image={Party}
         />
 
         <DressCard
-          title="Party"
-          image={Party}
-          className="party"
+            title="Gym"
+            image={Gym}
         />
+    </div>
 
-        <DressCard
-          title="Gym"
-          image={Gym}
-          className="gym"
-        />
-
-      </div>
+</div>
 
     </section>
   );
