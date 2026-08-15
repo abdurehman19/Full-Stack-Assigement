@@ -6,6 +6,7 @@ import NewArrivals from '../newarrival/NewArrivals'
 import Topselling from '../topselling/Topselling'
 import DressStyle from '../dressstyle/DressStyle'
 import HappyCustomers from '../happycostomers/HappyCustomers'
+import Newsletter from '../newsletter/Newsletter'
 
 function Home() {
   return(
@@ -16,6 +17,7 @@ function Home() {
     <Topselling/>
     <DressStyle/>
     <HappyCustomers/>
+    <Newsletter/>
     </>
   )
 }
