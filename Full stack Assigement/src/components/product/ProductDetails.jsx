@@ -6,39 +6,29 @@ import "./ProductDetails.css";
 const API_URL = "http://localhost:5000/api/products";
 
 const ProductDetails = () => {
-
   const { id } = useParams();
-
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-
-  // =====================================================
-  // LOAD PRODUCT FROM BACKEND
-  // =====================================================
+  // =========================
+  // FETCH PRODUCT
+  // =========================
 
   useEffect(() => {
-
-    const loadProduct = async () => {
-
+    const fetchProduct = async () => {
       try {
-
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-          `${API_URL}/${id}`
-        );
+        const response = await fetch(`${API_URL}/${id}`);
 
         if (!response.ok) {
           throw new Error("Product not found");
@@ -46,174 +36,135 @@ const ProductDetails = () => {
 
         const data = await response.json();
 
-        setProduct(data.product);
+        const fetchedProduct = data.product || data;
 
-
-        // Load related products
-        const productsResponse = await fetch(
-          API_URL
-        );
-
-        const productsData =
-          await productsResponse.json();
-
-        const related = productsData.products
-          .filter(
-            (item) => item._id !== data.product._id
-          )
-          .slice(0, 4);
-
-        setRelatedProducts(related);
-
+        setProduct(fetchedProduct);
 
         // Default size
-        if (
-          data.product.sizes &&
-          data.product.sizes.length > 0
-        ) {
-          setSelectedSize(
-            data.product.sizes[0]
-          );
+        if (fetchedProduct.sizes?.length > 0) {
+          setSelectedSize(fetchedProduct.sizes[0]);
         }
 
-      } catch (err) {
-
-        console.error(err);
-
-        setError(
-          "Unable to load product."
-        );
-
+        setSelectedImage(0);
+        setSelectedColor(0);
+        setQuantity(1);
+      } catch (error) {
+        console.error("Product fetch error:", error);
+        setError("Product load nahi ho saka.");
       } finally {
-
         setLoading(false);
-
       }
-
     };
 
-    loadProduct();
-
+    fetchProduct();
   }, [id]);
 
-
-  // =====================================================
+  // =========================
   // LOADING
-  // =====================================================
+  // =========================
 
   if (loading) {
-
     return (
       <main className="product-page">
-
         <div className="product-loading">
-
-          <h2>
-            Loading Product...
-          </h2>
-
+          <h2>Loading product...</h2>
         </div>
-
       </main>
     );
-
   }
 
-
-  // =====================================================
+  // =========================
   // ERROR
-  // =====================================================
+  // =========================
 
   if (error || !product) {
-
     return (
       <main className="product-page">
-
         <div className="product-not-found">
-
-          <h2>
-            Product Not Found
-          </h2>
+          <h2>Product Not Found</h2>
 
           <p>
-            {error ||
-              "This product does not exist."}
+            {error || "This product does not exist."}
           </p>
 
-          <Link to="/shop">
-            Back to Shop
+          <Link to="/">
+            Back to Home
           </Link>
-
         </div>
-
       </main>
     );
-
   }
 
+  // =========================
+  // PRODUCT DATA
+  // =========================
 
-  // =====================================================
-  // PRODUCT IMAGES
-  // =====================================================
+  const images = Array.isArray(product.image)
+    ? product.image.filter(Boolean)
+    : product.image
+      ? [product.image]
+      : [];
 
-  const productImages =
-    Array.isArray(product.image)
-      ? product.image
-      : product.image
-        ? [product.image]
-        : [];
+  const colors = Array.isArray(product.colors)
+    ? product.colors
+    : [];
 
+  const sizes = Array.isArray(product.sizes)
+    ? product.sizes
+    : [];
 
-  // =====================================================
+  const currentImage =
+    images[selectedImage] || images[0];
+
+  // =========================
   // ADD TO CART
-  // =====================================================
+  // =========================
 
   const handleAddToCart = () => {
+    if (!product) return;
 
     const selectedColorValue =
-      product.colors &&
-      product.colors.length > 0
-        ? product.colors[selectedColor]
-        : null;
+      colors[selectedColor] || "";
 
-
-    addToCart(
-      product,
-      quantity,
-      selectedSize,
-      selectedColorValue
-    );
-
-
-    alert(
-      "Product added to cart!"
-    );
-
+    addToCart({
+      id: product._id,
+      name: product.name,
+      price: Number(product.price),
+      oldPrice: product.oldPrice
+        ? Number(product.oldPrice)
+        : null,
+      image: images,
+      size: selectedSize,
+      color: selectedColorValue,
+      quantity: quantity,
+    });
   };
 
+  // =========================
+  // QUANTITY
+  // =========================
 
-  // =====================================================
-  // RETURN
-  // =====================================================
+  const decreaseQuantity = () => {
+    setQuantity((current) =>
+      current > 1 ? current - 1 : 1
+    );
+  };
+
+  const increaseQuantity = () => {
+    setQuantity((current) => current + 1);
+  };
 
   return (
     <main className="product-page">
 
-
-      {/* =================================================
+      {/* =========================
           BREADCRUMB
-      ================================================= */}
+      ========================= */}
 
       <div className="product-breadcrumb">
 
         <Link to="/">
           Home
-        </Link>
-
-        <span>/</span>
-
-        <Link to="/shop">
-          Shop
         </Link>
 
         <span>/</span>
@@ -230,29 +181,24 @@ const ProductDetails = () => {
 
       </div>
 
-
-
-      {/* =================================================
+      {/* =========================
           PRODUCT MAIN
-      ================================================= */}
+      ========================= */}
 
       <section className="product-main">
 
-
-        {/* =================================================
-            GALLERY
-        ================================================= */}
+        {/* =========================
+            PRODUCT GALLERY
+        ========================= */}
 
         <div className="product-gallery">
-
 
           {/* THUMBNAILS */}
 
           <div className="product-thumbnails">
 
-            {productImages.map(
-              (image, index) => (
-
+            {images.length > 0 ? (
+              images.map((image, index) => (
                 <button
                   key={index}
                   type="button"
@@ -265,60 +211,48 @@ const ProductDetails = () => {
                     setSelectedImage(index)
                   }
                 >
-
                   <img
                     src={image}
                     alt={`${product.name} ${index + 1}`}
                   />
-
                 </button>
-
-              )
+              ))
+            ) : (
+              <div className="thumbnail">
+                No Image
+              </div>
             )}
 
           </div>
-
 
           {/* MAIN IMAGE */}
 
           <div className="product-main-image">
 
-            {productImages.length > 0 ? (
-
+            {currentImage ? (
               <img
-                src={
-                  productImages[selectedImage]
-                }
+                src={currentImage}
                 alt={product.name}
               />
-
             ) : (
-
               <div className="no-product-image">
                 No Image
               </div>
-
             )}
 
           </div>
 
         </div>
 
-
-
-        {/* =================================================
+        {/* =========================
             PRODUCT INFO
-        ================================================= */}
+        ========================= */}
 
         <div className="product-info">
-
-
-          {/* NAME */}
 
           <h1>
             {product.name}
           </h1>
-
 
           {/* RATING */}
 
@@ -329,203 +263,156 @@ const ProductDetails = () => {
             </span>
 
             <span>
-              {product.rating}/5
+              {product.rating || 0}/5
             </span>
 
             <span className="review-count">
-              ({product.reviews} Reviews)
+              ({product.reviews || 0} Reviews)
             </span>
 
           </div>
-
 
           {/* PRICE */}
 
           <div className="product-price">
 
             <strong>
-              ${product.price}
+              ${Number(product.price).toFixed(2)}
             </strong>
 
             {product.oldPrice && (
-
               <del>
-                ${product.oldPrice}
+                ${Number(product.oldPrice).toFixed(2)}
               </del>
-
             )}
 
             {product.discount && (
-
               <span className="discount">
-                {product.discount}
+                -{product.discount}%
               </span>
-
             )}
 
           </div>
 
-
           {/* DESCRIPTION */}
 
           <p className="product-description">
-
             {product.description ||
-              "This product is made with high quality materials and designed for everyday comfort and style."}
-
+              "No description available for this product."}
           </p>
 
+          <div className="product-divider" />
 
-          <div className="product-divider"></div>
+          {/* =========================
+              COLOR
+          ========================= */}
 
+          {colors.length > 0 && (
+            <div className="product-option">
 
+              <h4>
+                Select Color
+              </h4>
 
-          {/* =================================================
-              COLORS
-          ================================================= */}
+              <div className="color-options">
 
-          {product.colors &&
-            product.colors.length > 0 && (
+                {colors.map((color, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    aria-label={`Select ${color}`}
+                    className={
+                      selectedColor === index
+                        ? "color selected"
+                        : "color"
+                    }
+                    style={{
+                      backgroundColor: color,
+                    }}
+                    onClick={() =>
+                      setSelectedColor(index)
+                    }
+                  />
+                ))}
 
-              <div className="product-option">
+              </div>
+
+            </div>
+          )}
+
+          {/* =========================
+              SIZE
+          ========================= */}
+
+          {sizes.length > 0 && (
+            <div className="product-option">
+
+              <div className="size-heading">
 
                 <h4>
-                  Select Color
+                  Choose Size
                 </h4>
 
-                <div className="color-options">
-
-                  {product.colors.map(
-                    (color, index) => (
-
-                      <button
-                        key={index}
-                        type="button"
-                        className={
-                          selectedColor === index
-                            ? "color selected"
-                            : "color"
-                        }
-                        style={{
-                          backgroundColor:
-                            color,
-                        }}
-                        onClick={() =>
-                          setSelectedColor(index)
-                        }
-                        aria-label={`Color ${index + 1}`}
-                      />
-
-                    )
-                  )}
-
-                </div>
+                <button
+                  type="button"
+                  className="size-guide"
+                >
+                  Size Guide →
+                </button>
 
               </div>
 
-            )}
+              <div className="size-options">
 
-
-
-          {/* =================================================
-              SIZE
-          ================================================= */}
-
-          {product.sizes &&
-            product.sizes.length > 0 && (
-
-              <div className="product-option">
-
-                <div className="size-heading">
-
-                  <h4>
-                    Choose Size
-                  </h4>
-
-                  <button type="button">
-                    Size Guide →
+                {sizes.map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={
+                      selectedSize === size
+                        ? "size active"
+                        : "size"
+                    }
+                    onClick={() =>
+                      setSelectedSize(size)
+                    }
+                  >
+                    {size}
                   </button>
-
-                </div>
-
-
-                <div className="size-options">
-
-                  {product.sizes.map(
-                    (size) => (
-
-                      <button
-                        key={size}
-                        type="button"
-                        className={
-                          selectedSize === size
-                            ? "size active"
-                            : "size"
-                        }
-                        onClick={() =>
-                          setSelectedSize(size)
-                        }
-                      >
-                        {size}
-                      </button>
-
-                    )
-                  )}
-
-                </div>
+                ))}
 
               </div>
 
-            )}
+            </div>
+          )}
 
-
-
-          {/* =================================================
+          {/* =========================
               QUANTITY + CART
-          ================================================= */}
+          ========================= */}
 
           <div className="product-cart-row">
-
-
-            {/* QUANTITY */}
 
             <div className="quantity">
 
               <button
                 type="button"
-                onClick={() =>
-                  setQuantity((q) =>
-                    q > 1
-                      ? q - 1
-                      : 1
-                  )
-                }
+                onClick={decreaseQuantity}
               >
                 −
               </button>
-
 
               <span>
                 {quantity}
               </span>
 
-
               <button
                 type="button"
-                onClick={() =>
-                  setQuantity(
-                    (q) => q + 1
-                  )
-                }
+                onClick={increaseQuantity}
               >
                 +
               </button>
 
             </div>
-
-
-
-            {/* ADD CART */}
 
             <button
               type="button"
@@ -537,26 +424,23 @@ const ProductDetails = () => {
 
           </div>
 
-
-
           {/* BUY NOW */}
 
-          <Link
-            to="/checkout"
+          <button
+            type="button"
             className="buy-now"
+            onClick={handleAddToCart}
           >
             Buy Now
-          </Link>
+          </button>
 
         </div>
 
       </section>
 
-
-
-      {/* =================================================
+      {/* =========================
           PRODUCT DETAILS
-      ================================================= */}
+      ========================= */}
 
       <section className="product-tabs">
 
@@ -585,38 +469,30 @@ const ProductDetails = () => {
 
         </div>
 
-
         <div className="product-details-content">
 
           <h2>
             Product Details
           </h2>
 
-
           <p>
             {product.description ||
-              "High quality product designed for comfort, durability and everyday style."}
+              "Product details are not available."}
           </p>
-
 
           <div className="specifications">
 
-
             <div>
-
               <span>
                 Category
               </span>
 
               <strong>
-                {product.category}
+                {product.category || "N/A"}
               </strong>
-
             </div>
 
-
             <div>
-
               <span>
                 Material
               </span>
@@ -624,12 +500,9 @@ const ProductDetails = () => {
               <strong>
                 100% Cotton
               </strong>
-
             </div>
 
-
             <div>
-
               <span>
                 Fit
               </span>
@@ -637,22 +510,19 @@ const ProductDetails = () => {
               <strong>
                 Regular Fit
               </strong>
-
             </div>
 
-
             <div>
-
               <span>
                 Availability
               </span>
 
               <strong>
-                In Stock
+                {product.stock > 0
+                  ? `${product.stock} In Stock`
+                  : "Out of Stock"}
               </strong>
-
             </div>
-
 
           </div>
 
@@ -660,11 +530,9 @@ const ProductDetails = () => {
 
       </section>
 
-
-
-      {/* =================================================
+      {/* =========================
           REVIEWS
-      ================================================= */}
+      ========================= */}
 
       <section className="reviews-section">
 
@@ -683,7 +551,6 @@ const ProductDetails = () => {
 
         </div>
 
-
         <div className="reviews-grid">
 
           {[
@@ -691,97 +558,32 @@ const ProductDetails = () => {
             "Very comfortable and the fitting is perfect.",
             "The product looks exactly like the pictures.",
             "Really happy with the quality and design.",
-          ].map(
-            (review, index) => (
+          ].map((review, index) => (
 
-              <div
-                className="review-card"
-                key={index}
-              >
+            <div
+              className="review-card"
+              key={index}
+            >
 
-                <div className="review-stars">
-                  ★★★★★
-                </div>
-
-                <strong>
-                  Verified Customer ✓
-                </strong>
-
-                <p>
-                  {review}
-                </p>
-
-                <small>
-                  Posted recently
-                </small>
-
+              <div className="review-stars">
+                ★★★★★
               </div>
 
-            )
-          )}
+              <strong>
+                Verified Customer ✓
+              </strong>
 
-        </div>
+              <p>
+                {review}
+              </p>
 
-      </section>
+              <small>
+                Posted recently
+              </small>
 
+            </div>
 
-
-      {/* =================================================
-          RELATED PRODUCTS
-      ================================================= */}
-
-      <section className="related-products">
-
-        <h2>
-          YOU MIGHT ALSO LIKE
-        </h2>
-
-
-        <div className="related-grid">
-
-          {relatedProducts.map(
-            (item) => (
-
-              <Link
-                to={`/product/${item._id}`}
-                className="related-card"
-                key={item._id}
-              >
-
-                <div className="related-image">
-
-                  <img
-                    src={
-                      Array.isArray(
-                        item.image
-                      )
-                        ? item.image[0]
-                        : item.image
-                    }
-                    alt={item.name}
-                  />
-
-                </div>
-
-
-                <h3>
-                  {item.name}
-                </h3>
-
-
-                <div className="related-rating">
-                  ★★★★★ {item.rating}/5
-                </div>
-
-
-                <strong>
-                  ${item.price}
-                </strong>
-
-              </Link>
-
-            )
-          )}
+          ))}
 
         </div>
 

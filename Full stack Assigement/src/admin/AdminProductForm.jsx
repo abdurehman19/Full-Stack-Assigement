@@ -28,33 +28,36 @@ const AdminProductForm = () => {
     stock: "0",
   });
 
-
   // ==============================
   // LOAD PRODUCT FOR EDIT
   // ==============================
 
   useEffect(() => {
-    if (!isEdit) return;
+    if (!isEdit) {
+      setLoading(false);
+      return;
+    }
 
     const loadProduct = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/${id}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Product not found");
-        }
+        const response = await fetch(`${API_URL}/${id}`);
 
         const data = await response.json();
-        const product = data.product;
+
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Product not found"
+          );
+        }
+
+        const product = data.product || data;
 
         setForm({
           name: product.name || "",
           category: product.category || "",
           price: product.price ?? "",
           oldPrice: product.oldPrice ?? "",
-          discount: product.discount || "",
+          discount: product.discount ?? "",
           rating: product.rating ?? "0",
           reviews: product.reviews ?? "0",
           description: product.description || "",
@@ -73,10 +76,13 @@ const AdminProductForm = () => {
 
           stock: product.stock ?? "0",
         });
-
       } catch (error) {
-        console.error(error);
-        alert("Product load nahi ho saka.");
+        console.error("Load product error:", error);
+
+        alert(
+          error.message || "Product load nahi ho saka."
+        );
+
         navigate("/admin/products");
       } finally {
         setLoading(false);
@@ -85,7 +91,6 @@ const AdminProductForm = () => {
 
     loadProduct();
   }, [id, isEdit, navigate]);
-
 
   // ==============================
   // INPUT CHANGE
@@ -100,13 +105,16 @@ const AdminProductForm = () => {
     }));
   };
 
-
   // ==============================
   // SUBMIT
   // ==============================
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // ------------------------------
+    // VALIDATION
+    // ------------------------------
 
     if (!form.name.trim()) {
       alert("Product name required hai.");
@@ -118,11 +126,22 @@ const AdminProductForm = () => {
       return;
     }
 
-    if (!form.price || Number(form.price) < 0) {
+    if (
+      form.price === "" ||
+      Number(form.price) < 0
+    ) {
       alert("Valid price enter karo.");
       return;
     }
 
+    if (Number(form.stock) < 0) {
+      alert("Stock 0 ya us se zyada hona chahiye.");
+      return;
+    }
+
+    // ------------------------------
+    // PREPARE DATA
+    // ------------------------------
 
     const productData = {
       name: form.name.trim(),
@@ -136,13 +155,17 @@ const AdminProductForm = () => {
           ? null
           : Number(form.oldPrice),
 
-      discount: form.discount.trim(),
+      discount:
+        form.discount.trim() || null,
 
-      rating: Number(form.rating) || 0,
+      rating:
+        Number(form.rating) || 0,
 
-      reviews: Number(form.reviews) || 0,
+      reviews:
+        Number(form.reviews) || 0,
 
-      description: form.description.trim(),
+      description:
+        form.description.trim(),
 
       image: form.image
         .split("\n")
@@ -159,38 +182,52 @@ const AdminProductForm = () => {
         .map((item) => item.trim())
         .filter(Boolean),
 
-      stock: Number(form.stock) || 0,
+      stock:
+        Number(form.stock) || 0,
+
+      isActive: true,
     };
 
+    console.log("PRODUCT DATA:", productData);
+
+    // ------------------------------
+    // SAVE
+    // ------------------------------
 
     try {
       setSaving(true);
 
-      const response = await fetch(
-        isEdit
-          ? `${API_URL}/${id}`
-          : API_URL,
-        {
-          method: isEdit ? "PUT" : "POST",
+      const url = isEdit
+        ? `${API_URL}/${id}`
+        : API_URL;
 
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const method = isEdit
+        ? "PUT"
+        : "POST";
 
-          body: JSON.stringify(productData),
-        }
-      );
+      const response = await fetch(url, {
+        method,
 
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(productData),
+      });
 
       const data = await response.json();
 
-
       if (!response.ok) {
         throw new Error(
-          data.message || "Something went wrong"
+          data.message ||
+            "Product save nahi ho saka."
         );
       }
 
+      console.log(
+        "PRODUCT SAVED:",
+        data
+      );
 
       alert(
         isEdit
@@ -198,38 +235,52 @@ const AdminProductForm = () => {
           : "Product created successfully! ✅"
       );
 
-
       navigate("/admin/products");
-
     } catch (error) {
+      console.error(
+        "Save product error:",
+        error
+      );
 
-      console.error(error);
-
-      alert(error.message);
-
+      alert(
+        error.message ||
+          "Something went wrong."
+      );
     } finally {
-
       setSaving(false);
-
     }
   };
 
+  // ==============================
+  // LOADING
+  // ==============================
 
   if (loading) {
     return (
       <main className="admin-form-page">
-        <h2>Loading product...</h2>
+
+        <div className="admin-loading">
+          <h2>Loading product...</h2>
+          <p>Please wait.</p>
+        </div>
+
       </main>
     );
   }
 
+  // ==============================
+  // FORM
+  // ==============================
 
   return (
     <main className="admin-form-page">
 
+      {/* HEADER */}
+
       <div className="admin-form-header">
 
         <div>
+
           <p className="admin-label">
             ADMIN PANEL
           </p>
@@ -245,8 +296,8 @@ const AdminProductForm = () => {
               ? "Update your product information."
               : "Add a new product to your store."}
           </p>
-        </div>
 
+        </div>
 
         <Link
           to="/admin/products"
@@ -257,21 +308,20 @@ const AdminProductForm = () => {
 
       </div>
 
+      {/* FORM */}
 
       <form
         className="admin-product-form"
         onSubmit={handleSubmit}
       >
 
-
-        {/* BASIC INFO */}
+        {/* BASIC INFORMATION */}
 
         <section className="form-section">
 
           <h2>
             Basic Information
           </h2>
-
 
           <div className="form-grid">
 
@@ -291,7 +341,6 @@ const AdminProductForm = () => {
 
             </div>
 
-
             <div className="form-group">
 
               <label>
@@ -307,7 +356,6 @@ const AdminProductForm = () => {
               />
 
             </div>
-
 
             <div className="form-group">
 
@@ -330,15 +378,13 @@ const AdminProductForm = () => {
 
         </section>
 
-
-        {/* PRICE */}
+        {/* PRICING */}
 
         <section className="form-section">
 
           <h2>
             Pricing
           </h2>
-
 
           <div className="form-grid">
 
@@ -360,7 +406,6 @@ const AdminProductForm = () => {
 
             </div>
 
-
             <div className="form-group">
 
               <label>
@@ -379,7 +424,6 @@ const AdminProductForm = () => {
 
             </div>
 
-
             <div className="form-group">
 
               <label>
@@ -391,7 +435,7 @@ const AdminProductForm = () => {
                 name="discount"
                 value={form.discount}
                 onChange={handleChange}
-                placeholder="-20%"
+                placeholder="20"
               />
 
             </div>
@@ -399,7 +443,6 @@ const AdminProductForm = () => {
           </div>
 
         </section>
-
 
         {/* DESCRIPTION */}
 
@@ -427,7 +470,6 @@ const AdminProductForm = () => {
 
         </section>
 
-
         {/* IMAGES */}
 
         <section className="form-section">
@@ -448,7 +490,7 @@ const AdminProductForm = () => {
               onChange={handleChange}
               rows="4"
               placeholder={
-                "/assets/product/t-shirt-2.jpeg\n/assets/product/t-shirt-3.jpeg"
+                "/asstes/product/t-shirt-1.jpeg\n/asstes/product/t-shirt-2.jpeg"
               }
             />
 
@@ -460,15 +502,13 @@ const AdminProductForm = () => {
 
         </section>
 
-
-        {/* COLORS & SIZES */}
+        {/* VARIANTS */}
 
         <section className="form-section">
 
           <h2>
             Variants
           </h2>
-
 
           <div className="form-grid">
 
@@ -491,7 +531,6 @@ const AdminProductForm = () => {
               </small>
 
             </div>
-
 
             <div className="form-group">
 
@@ -517,15 +556,13 @@ const AdminProductForm = () => {
 
         </section>
 
-
-        {/* RATING */}
+        {/* REVIEWS */}
 
         <section className="form-section">
 
           <h2>
             Reviews
           </h2>
-
 
           <div className="form-grid">
 
@@ -547,7 +584,6 @@ const AdminProductForm = () => {
 
             </div>
 
-
             <div className="form-group">
 
               <label>
@@ -568,8 +604,7 @@ const AdminProductForm = () => {
 
         </section>
 
-
-        {/* BUTTONS */}
+        {/* ACTIONS */}
 
         <div className="form-actions">
 
@@ -579,7 +614,6 @@ const AdminProductForm = () => {
           >
             Cancel
           </Link>
-
 
           <button
             type="submit"

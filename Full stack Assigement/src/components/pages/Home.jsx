@@ -5,9 +5,7 @@ import Marque from '../marque/Marque'
 import NewArrivals from '../newarrival/NewArrivals'
 import Topselling from '../topselling/Topselling'
 import DressStyle from '../dressstyle/DressStyle'
-import HappyCustomers from '../happycostomers/HappyCustomers'
-import Newsletter from '../newsletter/Newsletter'
-import Footer from '../footer/Footer'
+import HappyCustomers from '../happycostomers/HappyCustomers';
 
 function Home() {
   return(
@@ -18,9 +16,7 @@ function Home() {
     <Topselling/>
     <DressStyle/>
     <HappyCustomers/>
-    <Newsletter/>
-    <Footer/>
-    </>
+      </>
   )
 }
 
