@@ -1,9 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import products from "../product/Product";
 import "./Shop.css";
 
+const API_URL = "http://localhost:5000/api/products";
+
 const Shop = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
@@ -13,6 +18,40 @@ const Shop = () => {
 
   const productsPerPage = 6;
 
+  // =========================
+  // FETCH PRODUCTS
+  // =========================
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error("Products load nahi huay.");
+        }
+
+        const data = await response.json();
+
+        setProducts(data.products || data);
+      } catch (err) {
+        console.error("Shop products error:", err);
+        setError("Products load nahi ho sake.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // =========================
+  // CATEGORIES
+  // =========================
+
   const categories = [
     "All",
     "T-Shirts",
@@ -20,6 +59,10 @@ const Shop = () => {
     "Jeans",
     "Shorts",
   ];
+
+  // =========================
+  // COLORS
+  // =========================
 
   const colors = [
     { name: "Green", value: "#008000" },
@@ -32,6 +75,10 @@ const Shop = () => {
     { name: "Black", value: "#000000" },
     { name: "White", value: "#ffffff" },
   ];
+
+  // =========================
+  // SIZES
+  // =========================
 
   const sizes = [
     "XX-Small",
@@ -97,7 +144,9 @@ const Shop = () => {
     // Color
     if (selectedColors.length > 0) {
       result = result.filter((product) => {
-        if (!product.colors) return false;
+        if (!Array.isArray(product.colors)) {
+          return false;
+        }
 
         return product.colors.some((color) =>
           selectedColors.includes(color)
@@ -108,7 +157,9 @@ const Shop = () => {
     // Size
     if (selectedSizes.length > 0) {
       result = result.filter((product) => {
-        if (!product.sizes) return false;
+        if (!Array.isArray(product.sizes)) {
+          return false;
+        }
 
         return product.sizes.some((size) =>
           selectedSizes.includes(size)
@@ -131,13 +182,13 @@ const Shop = () => {
 
     if (sortBy === "Rating") {
       result.sort(
-        (a, b) =>
-          Number(b.rating) - Number(a.rating)
+        (a, b) => Number(b.rating) - Number(a.rating)
       );
     }
 
     return result;
   }, [
+    products,
     selectedCategory,
     selectedColors,
     selectedSizes,
@@ -170,8 +221,53 @@ const Shop = () => {
     setSelectedColors([]);
     setSelectedSizes([]);
     setMaxPrice(300);
+    setSortBy("Most Popular");
     setCurrentPage(1);
   };
+
+  // =========================
+  // LOADING
+  // =========================
+
+  if (loading) {
+    return (
+      <main className="shop-page">
+        <div className="shop-breadcrumb">
+          <Link to="/">Home</Link>
+          <span>/</span>
+          <strong>Shop</strong>
+        </div>
+
+        <div className="no-products">
+          <h2>Loading Products...</h2>
+        </div>
+      </main>
+    );
+  }
+
+  // =========================
+  // ERROR
+  // =========================
+
+  if (error) {
+    return (
+      <main className="shop-page">
+        <div className="shop-breadcrumb">
+          <Link to="/">Home</Link>
+          <span>/</span>
+          <strong>Shop</strong>
+        </div>
+
+        <div className="no-products">
+          <h2>{error}</h2>
+
+          <button onClick={() => window.location.reload()}>
+            Try Again
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="shop-page">
@@ -185,7 +281,6 @@ const Shop = () => {
         <span>/</span>
         <strong>Shop</strong>
       </div>
-
 
       {/* =========================
           SHOP LAYOUT
@@ -210,7 +305,6 @@ const Shop = () => {
             </button>
           </div>
 
-
           {/* Categories */}
 
           <div className="filter-section">
@@ -218,7 +312,6 @@ const Shop = () => {
             <h4>Categories</h4>
 
             {categories.map((category) => (
-
               <button
                 key={category}
                 className={
@@ -234,11 +327,9 @@ const Shop = () => {
                 <span>{category}</span>
                 <span>›</span>
               </button>
-
             ))}
 
           </div>
-
 
           {/* Price */}
 
@@ -265,7 +356,6 @@ const Shop = () => {
 
           </div>
 
-
           {/* Colors */}
 
           <div className="filter-section">
@@ -275,7 +365,6 @@ const Shop = () => {
             <div className="color-filter-grid">
 
               {colors.map((color) => (
-
                 <button
                   key={color.name}
                   title={color.name}
@@ -291,13 +380,11 @@ const Shop = () => {
                     toggleColor(color.value)
                   }
                 />
-
               ))}
 
             </div>
 
           </div>
-
 
           {/* Sizes */}
 
@@ -308,7 +395,6 @@ const Shop = () => {
             <div className="size-filter-grid">
 
               {sizes.map((size) => (
-
                 <button
                   key={size}
                   className={
@@ -322,13 +408,11 @@ const Shop = () => {
                 >
                   {size}
                 </button>
-
               ))}
 
             </div>
 
           </div>
-
 
           {/* Dress Style */}
 
@@ -354,7 +438,6 @@ const Shop = () => {
 
           </div>
 
-
           <button
             className="apply-filter"
             onClick={() => setCurrentPage(1)}
@@ -363,7 +446,6 @@ const Shop = () => {
           </button>
 
         </aside>
-
 
         {/* =========================
             PRODUCTS AREA
@@ -376,18 +458,23 @@ const Shop = () => {
           <div className="shop-heading">
 
             <div>
-              <h1>Casual</h1>
+
+              <h1>
+                {selectedCategory === "All"
+                  ? "Shop"
+                  : selectedCategory}
+              </h1>
 
               <p>
-                Showing {startIndex + 1}-
-                {Math.min(
-                  startIndex + productsPerPage,
-                  filteredProducts.length
-                )}{" "}
-                of {filteredProducts.length} Products
+                {filteredProducts.length > 0
+                  ? `Showing ${startIndex + 1}-${Math.min(
+                      startIndex + productsPerPage,
+                      filteredProducts.length
+                    )} of ${filteredProducts.length} Products`
+                  : "0 Products"}
               </p>
-            </div>
 
+            </div>
 
             <div className="sort-box">
 
@@ -410,100 +497,97 @@ const Shop = () => {
 
           </div>
 
-
           {/* Product Grid */}
 
           {visibleProducts.length > 0 ? (
 
             <div className="shop-product-grid">
 
-              {visibleProducts.map((product) => (
+              {visibleProducts.map((product) => {
 
-                <Link
-                  to={`/product/${product.id}`}
-                  className="shop-product-card"
-                  key={product.id}
-                >
+                const image = Array.isArray(product.image)
+                  ? product.image[0]
+                  : product.image;
 
-                  <div className="shop-product-image">
+                return (
+                  <Link
+                    to={`/product/${product._id}`}
+                    className="shop-product-card"
+                    key={product._id}
+                  >
 
-                    <img
-                      src={
-                        Array.isArray(product.image)
-                          ? product.image[0]
-                          : product.image
-                      }
-                      alt={product.name}
-                    />
+                    <div className="shop-product-image">
 
-                  </div>
+                      <img
+                        src={image}
+                        alt={product.name}
+                      />
 
+                    </div>
 
-                  <h3>
-                    {product.name}
-                  </h3>
+                    <h3>
+                      {product.name}
+                    </h3>
 
+                    <div className="shop-rating">
 
-                  <div className="shop-rating">
-
-                    <span>
-                      ★★★★★
-                    </span>
-
-                    <small>
-                      {product.rating}/5
-                    </small>
-
-                    <small>
-                      ({product.reviews})
-                    </small>
-
-                  </div>
-
-
-                  <div className="shop-price">
-
-                    <strong>
-                      ${product.price}
-                    </strong>
-
-                    {product.oldPrice && (
-                      <del>
-                        ${product.oldPrice}
-                      </del>
-                    )}
-
-                    {product.discount && (
                       <span>
-                        {product.discount}
+                        ★★★★★
                       </span>
-                    )}
 
-                  </div>
+                      <small>
+                        {product.rating}/5
+                      </small>
 
-                </Link>
+                      <small>
+                        ({product.reviews})
+                      </small>
 
-              ))}
+                    </div>
+
+                    <div className="shop-price">
+
+                      <strong>
+                        ${product.price}
+                      </strong>
+
+                      {product.oldPrice && (
+                        <del>
+                          ${product.oldPrice}
+                        </del>
+                      )}
+
+                      {product.discount && (
+                        <span>
+                          -{product.discount}%
+                        </span>
+                      )}
+
+                    </div>
+
+                  </Link>
+                );
+              })}
 
             </div>
 
           ) : (
 
             <div className="no-products">
+
               <h2>No Products Found</h2>
+
               <p>
                 Try changing your filters.
               </p>
 
-              <button
-                onClick={clearFilters}
-              >
+              <button onClick={clearFilters}>
                 Clear Filters
               </button>
+
             </div>
 
           )}
-
 
           {/* Pagination */}
 
@@ -514,14 +598,11 @@ const Shop = () => {
               <button
                 disabled={currentPage === 1}
                 onClick={() =>
-                  setCurrentPage((page) =>
-                    page - 1
-                  )
+                  setCurrentPage((page) => page - 1)
                 }
               >
                 ← Previous
               </button>
-
 
               <div className="page-numbers">
 
@@ -548,15 +629,10 @@ const Shop = () => {
 
               </div>
 
-
               <button
-                disabled={
-                  currentPage === totalPages
-                }
+                disabled={currentPage === totalPages}
                 onClick={() =>
-                  setCurrentPage((page) =>
-                    page + 1
-                  )
+                  setCurrentPage((page) => page + 1)
                 }
               >
                 Next →
