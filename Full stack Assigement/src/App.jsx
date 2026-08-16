@@ -13,6 +13,8 @@ import { CartProvider } from "./components/pages/CartContext";
 import Newsletter from "./components/newsletter/Newsletter";
 import Footer from "./components/footer/Footer";
 import Checkout from "./components/checkout/Checkout";
+import AdminProducts from "./admin/AdminProducts";
+import AdminProductForm from "./admin/AdminProductForm";
 
 function App() {
   return (
@@ -46,13 +48,28 @@ function App() {
             element={<Cart />}
           />
           <Route
-  path="/checkout"
-  element={<Checkout />}
-/>
+            path="/checkout"
+            element={<Checkout />}
+          />
+          <Route
+            path="/admin/products"
+            element={<AdminProducts />}
+          />
+
+          <Route
+            path="/admin/products/new"
+            element={<AdminProductForm />}
+          />
+
+          <Route
+            path="/admin/products/edit/:id"
+            element={<AdminProductForm />}
+          />
+
 
         </Routes>
-        <Newsletter/>
-        <Footer/>
+        <Newsletter />
+        <Footer />
 
       </CartProvider>
 

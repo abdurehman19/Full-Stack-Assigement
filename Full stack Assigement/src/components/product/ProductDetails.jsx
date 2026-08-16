@@ -1,76 +1,208 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import products from "./Product.js";
+import { useCart } from "../pages/CartContext";
 import "./ProductDetails.css";
 
-import { useCart } from "../pages/CartContext";
-
+const API_URL = "http://localhost:5000/api/products";
 
 const ProductDetails = () => {
 
   const { id } = useParams();
 
-  // ✅ IMPORTANT:
-  // useCart component ke ANDAR hona chahiye
   const { addToCart } = useCart();
 
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Find product
-  const product = products.find(
-    (item) => item.id === Number(id)
-  );
-
-
-  // States
   const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
-  const [selectedSize, setSelectedSize] =
-    useState("Large");
-
-  const [selectedColor, setSelectedColor] =
-    useState(0);
-
-  const [quantity, setQuantity] =
-    useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
 
-  // Product images
-  const productImages = product
-    ? Array.isArray(product.image)
-      ? product.image
-      : [product.image]
-    : [];
+  // =====================================================
+  // LOAD PRODUCT FROM BACKEND
+  // =====================================================
+
+  useEffect(() => {
+
+    const loadProduct = async () => {
+
+      try {
+
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          `${API_URL}/${id}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Product not found");
+        }
+
+        const data = await response.json();
+
+        setProduct(data.product);
 
 
-  // Product not found
-  if (!product) {
+        // Load related products
+        const productsResponse = await fetch(
+          API_URL
+        );
+
+        const productsData =
+          await productsResponse.json();
+
+        const related = productsData.products
+          .filter(
+            (item) => item._id !== data.product._id
+          )
+          .slice(0, 4);
+
+        setRelatedProducts(related);
+
+
+        // Default size
+        if (
+          data.product.sizes &&
+          data.product.sizes.length > 0
+        ) {
+          setSelectedSize(
+            data.product.sizes[0]
+          );
+        }
+
+      } catch (err) {
+
+        console.error(err);
+
+        setError(
+          "Unable to load product."
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+    loadProduct();
+
+  }, [id]);
+
+
+  // =====================================================
+  // LOADING
+  // =====================================================
+
+  if (loading) {
+
     return (
-      <div className="product-not-found">
+      <main className="product-page">
 
-        <h2>
-          Product Not Found
-        </h2>
+        <div className="product-loading">
 
-        <p>
-          This product does not exist.
-        </p>
+          <h2>
+            Loading Product...
+          </h2>
 
-        <Link to="/shop">
-          Back to Shop
-        </Link>
+        </div>
 
-      </div>
+      </main>
     );
+
   }
 
+
+  // =====================================================
+  // ERROR
+  // =====================================================
+
+  if (error || !product) {
+
+    return (
+      <main className="product-page">
+
+        <div className="product-not-found">
+
+          <h2>
+            Product Not Found
+          </h2>
+
+          <p>
+            {error ||
+              "This product does not exist."}
+          </p>
+
+          <Link to="/shop">
+            Back to Shop
+          </Link>
+
+        </div>
+
+      </main>
+    );
+
+  }
+
+
+  // =====================================================
+  // PRODUCT IMAGES
+  // =====================================================
+
+  const productImages =
+    Array.isArray(product.image)
+      ? product.image
+      : product.image
+        ? [product.image]
+        : [];
+
+
+  // =====================================================
+  // ADD TO CART
+  // =====================================================
+
+  const handleAddToCart = () => {
+
+    const selectedColorValue =
+      product.colors &&
+      product.colors.length > 0
+        ? product.colors[selectedColor]
+        : null;
+
+
+    addToCart(
+      product,
+      quantity,
+      selectedSize,
+      selectedColorValue
+    );
+
+
+    alert(
+      "Product added to cart!"
+    );
+
+  };
+
+
+  // =====================================================
+  // RETURN
+  // =====================================================
 
   return (
     <main className="product-page">
 
 
-      {/* =========================
+      {/* =================================================
           BREADCRUMB
-      ========================= */}
+      ================================================= */}
 
       <div className="product-breadcrumb">
 
@@ -100,21 +232,21 @@ const ProductDetails = () => {
 
 
 
-      {/* =========================
+      {/* =================================================
           PRODUCT MAIN
-      ========================= */}
+      ================================================= */}
 
       <section className="product-main">
 
 
-        {/* =========================
-            PRODUCT GALLERY
-        ========================= */}
+        {/* =================================================
+            GALLERY
+        ================================================= */}
 
         <div className="product-gallery">
 
 
-          {/* Thumbnails */}
+          {/* THUMBNAILS */}
 
           <div className="product-thumbnails">
 
@@ -136,9 +268,7 @@ const ProductDetails = () => {
 
                   <img
                     src={image}
-                    alt={`${product.name} ${
-                      index + 1
-                    }`}
+                    alt={`${product.name} ${index + 1}`}
                   />
 
                 </button>
@@ -149,17 +279,26 @@ const ProductDetails = () => {
           </div>
 
 
-
-          {/* Main Image */}
+          {/* MAIN IMAGE */}
 
           <div className="product-main-image">
 
-            <img
-              src={
-                productImages[selectedImage]
-              }
-              alt={product.name}
-            />
+            {productImages.length > 0 ? (
+
+              <img
+                src={
+                  productImages[selectedImage]
+                }
+                alt={product.name}
+              />
+
+            ) : (
+
+              <div className="no-product-image">
+                No Image
+              </div>
+
+            )}
 
           </div>
 
@@ -167,22 +306,21 @@ const ProductDetails = () => {
 
 
 
-        {/* =========================
-            PRODUCT INFORMATION
-        ========================= */}
+        {/* =================================================
+            PRODUCT INFO
+        ================================================= */}
 
         <div className="product-info">
 
 
-          {/* Product Name */}
+          {/* NAME */}
 
           <h1>
             {product.name}
           </h1>
 
 
-
-          {/* Rating */}
+          {/* RATING */}
 
           <div className="product-rating">
 
@@ -201,8 +339,7 @@ const ProductDetails = () => {
           </div>
 
 
-
-          {/* Price */}
+          {/* PRICE */}
 
           <div className="product-price">
 
@@ -211,22 +348,25 @@ const ProductDetails = () => {
             </strong>
 
             {product.oldPrice && (
+
               <del>
                 ${product.oldPrice}
               </del>
+
             )}
 
             {product.discount && (
+
               <span className="discount">
                 {product.discount}
               </span>
+
             )}
 
           </div>
 
 
-
-          {/* Description */}
+          {/* DESCRIPTION */}
 
           <p className="product-description">
 
@@ -240,107 +380,114 @@ const ProductDetails = () => {
 
 
 
-          {/* =========================
-              COLOR
-          ========================= */}
+          {/* =================================================
+              COLORS
+          ================================================= */}
 
-          <div className="product-option">
+          {product.colors &&
+            product.colors.length > 0 && (
 
-            <h4>
-              Select Color
-            </h4>
+              <div className="product-option">
 
-            <div className="color-options">
+                <h4>
+                  Select Color
+                </h4>
 
-              {product.colors &&
-                product.colors.map(
-                  (color, index) => (
+                <div className="color-options">
 
-                    <button
-                      key={index}
-                      type="button"
-                      className={
-                        selectedColor === index
-                          ? "color selected"
-                          : "color"
-                      }
-                      style={{
-                        backgroundColor: color,
-                      }}
-                      onClick={() =>
-                        setSelectedColor(index)
-                      }
-                      aria-label={`Color ${
-                        index + 1
-                      }`}
-                    />
+                  {product.colors.map(
+                    (color, index) => (
 
-                  )
-                )}
+                      <button
+                        key={index}
+                        type="button"
+                        className={
+                          selectedColor === index
+                            ? "color selected"
+                            : "color"
+                        }
+                        style={{
+                          backgroundColor:
+                            color,
+                        }}
+                        onClick={() =>
+                          setSelectedColor(index)
+                        }
+                        aria-label={`Color ${index + 1}`}
+                      />
 
-            </div>
+                    )
+                  )}
 
-          </div>
+                </div>
+
+              </div>
+
+            )}
 
 
 
-          {/* =========================
+          {/* =================================================
               SIZE
-          ========================= */}
+          ================================================= */}
 
-          <div className="product-option">
+          {product.sizes &&
+            product.sizes.length > 0 && (
 
-            <div className="size-heading">
+              <div className="product-option">
 
-              <h4>
-                Choose Size
-              </h4>
+                <div className="size-heading">
 
-              <button type="button">
-                Size Guide →
-              </button>
+                  <h4>
+                    Choose Size
+                  </h4>
 
-            </div>
+                  <button type="button">
+                    Size Guide →
+                  </button>
 
-
-            <div className="size-options">
-
-              {product.sizes &&
-                product.sizes.map(
-                  (size) => (
-
-                    <button
-                      key={size}
-                      type="button"
-                      className={
-                        selectedSize === size
-                          ? "size active"
-                          : "size"
-                      }
-                      onClick={() =>
-                        setSelectedSize(size)
-                      }
-                    >
-                      {size}
-                    </button>
-
-                  )
-                )}
-
-            </div>
-
-          </div>
+                </div>
 
 
+                <div className="size-options">
 
-          {/* =========================
+                  {product.sizes.map(
+                    (size) => (
+
+                      <button
+                        key={size}
+                        type="button"
+                        className={
+                          selectedSize === size
+                            ? "size active"
+                            : "size"
+                        }
+                        onClick={() =>
+                          setSelectedSize(size)
+                        }
+                      >
+                        {size}
+                      </button>
+
+                    )
+                  )}
+
+                </div>
+
+              </div>
+
+            )}
+
+
+
+          {/* =================================================
               QUANTITY + CART
-          ========================= */}
+          ================================================= */}
 
           <div className="product-cart-row">
 
 
-            {/* Quantity */}
+            {/* QUANTITY */}
 
             <div className="quantity">
 
@@ -348,7 +495,9 @@ const ProductDetails = () => {
                 type="button"
                 onClick={() =>
                   setQuantity((q) =>
-                    q > 1 ? q - 1 : 1
+                    q > 1
+                      ? q - 1
+                      : 1
                   )
                 }
               >
@@ -364,7 +513,9 @@ const ProductDetails = () => {
               <button
                 type="button"
                 onClick={() =>
-                  setQuantity((q) => q + 1)
+                  setQuantity(
+                    (q) => q + 1
+                  )
                 }
               >
                 +
@@ -374,29 +525,12 @@ const ProductDetails = () => {
 
 
 
-            {/* =========================
-                ADD TO CART
-            ========================= */}
+            {/* ADD CART */}
 
             <button
               type="button"
               className="add-cart"
-              onClick={() => {
-
-                addToCart(
-                  product,
-                  quantity,
-                  selectedSize,
-                  product.colors
-                    ? product.colors[selectedColor]
-                    : null
-                );
-
-                alert(
-                  "Product added to cart!"
-                );
-
-              }}
+              onClick={handleAddToCart}
             >
               Add to Cart
             </button>
@@ -405,14 +539,14 @@ const ProductDetails = () => {
 
 
 
-          {/* Buy Now */}
+          {/* BUY NOW */}
 
-          <button
-            type="button"
+          <Link
+            to="/checkout"
             className="buy-now"
           >
             Buy Now
-          </button>
+          </Link>
 
         </div>
 
@@ -420,12 +554,11 @@ const ProductDetails = () => {
 
 
 
-      {/* =========================
+      {/* =================================================
           PRODUCT DETAILS
-      ========================= */}
+      ================================================= */}
 
       <section className="product-tabs">
-
 
         <div className="tabs-header">
 
@@ -453,12 +586,12 @@ const ProductDetails = () => {
         </div>
 
 
-
         <div className="product-details-content">
 
           <h2>
             Product Details
           </h2>
+
 
           <p>
             {product.description ||
@@ -466,11 +599,11 @@ const ProductDetails = () => {
           </p>
 
 
-
           <div className="specifications">
 
 
             <div>
+
               <span>
                 Category
               </span>
@@ -478,10 +611,12 @@ const ProductDetails = () => {
               <strong>
                 {product.category}
               </strong>
+
             </div>
 
 
             <div>
+
               <span>
                 Material
               </span>
@@ -489,10 +624,12 @@ const ProductDetails = () => {
               <strong>
                 100% Cotton
               </strong>
+
             </div>
 
 
             <div>
+
               <span>
                 Fit
               </span>
@@ -500,10 +637,12 @@ const ProductDetails = () => {
               <strong>
                 Regular Fit
               </strong>
+
             </div>
 
 
             <div>
+
               <span>
                 Availability
               </span>
@@ -511,6 +650,7 @@ const ProductDetails = () => {
               <strong>
                 In Stock
               </strong>
+
             </div>
 
 
@@ -522,12 +662,11 @@ const ProductDetails = () => {
 
 
 
-      {/* =========================
+      {/* =================================================
           REVIEWS
-      ========================= */}
+      ================================================= */}
 
       <section className="reviews-section">
-
 
         <div className="reviews-heading">
 
@@ -543,7 +682,6 @@ const ProductDetails = () => {
           </button>
 
         </div>
-
 
 
         <div className="reviews-grid">
@@ -588,9 +726,9 @@ const ProductDetails = () => {
 
 
 
-      {/* =========================
+      {/* =================================================
           RELATED PRODUCTS
-      ========================= */}
+      ================================================= */}
 
       <section className="related-products">
 
@@ -601,25 +739,22 @@ const ProductDetails = () => {
 
         <div className="related-grid">
 
-          {products
-            .filter(
-              (item) =>
-                item.id !== product.id
-            )
-            .slice(0, 4)
-            .map((item) => (
+          {relatedProducts.map(
+            (item) => (
 
               <Link
-                to={`/product/${item.id}`}
+                to={`/product/${item._id}`}
                 className="related-card"
-                key={item.id}
+                key={item._id}
               >
 
                 <div className="related-image">
 
                   <img
                     src={
-                      Array.isArray(item.image)
+                      Array.isArray(
+                        item.image
+                      )
                         ? item.image[0]
                         : item.image
                     }
@@ -645,16 +780,15 @@ const ProductDetails = () => {
 
               </Link>
 
-            ))}
+            )
+          )}
 
         </div>
 
       </section>
 
-
     </main>
   );
 };
-
 
 export default ProductDetails;
