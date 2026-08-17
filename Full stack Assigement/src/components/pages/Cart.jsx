@@ -4,67 +4,51 @@ import { useCart } from "../../components/pages/CartContext";
 import "./Cart.css";
 
 const Cart = () => {
-
   const navigate = useNavigate();
 
   const {
-    cart,
+    cartItems,
     cartTotal,
     removeFromCart,
     updateQuantity,
     clearCart,
   } = useCart();
 
-
   // =========================
   // EMPTY CART
   // =========================
 
-  if (cart.length === 0) {
-
+  if (cartItems.length === 0) {
     return (
       <main className="cart-page">
-
         <div className="empty-cart">
+          <h1>Your Cart</h1>
 
-          <h1>
-            Your Cart
-          </h1>
-
-          <p>
-            Your cart is currently empty.
-          </p>
+          <p>Your cart is currently empty.</p>
 
           <Link to="/shop">
             Continue Shopping
           </Link>
-
         </div>
-
       </main>
     );
   }
-
 
   // =========================
   // DELIVERY
   // =========================
 
   const delivery = 15;
-
   const total = cartTotal + delivery;
-
 
   return (
     <main className="cart-page">
-
 
       {/* =========================
           BREADCRUMB
       ========================= */}
 
       <div className="cart-breadcrumb">
-
         <Link to="/">
           Home
         </Link>
@@ -74,10 +58,7 @@ const Cart = () => {
         <strong>
           Cart
         </strong>
-
       </div>
-
-
 
       {/* =========================
           TITLE
@@ -87,14 +68,11 @@ const Cart = () => {
         Your Cart
       </h1>
 
-
-
       {/* =========================
           CART LAYOUT
       ========================= */}
 
       <div className="cart-layout">
-
 
         {/* =========================
             PRODUCTS
@@ -102,143 +80,139 @@ const Cart = () => {
 
         <section className="cart-items">
 
+          {cartItems.map((item) => {
 
-          {cart.map((item) => (
+            const itemId = item.id || item._id;
 
-            <div
-              className="cart-item"
-              key={`${item.id}-${item.size}-${item.color}`}
-            >
+            return (
+              <div
+                className="cart-item"
+                key={`${itemId}-${item.selectedSize}-${item.selectedColor}`}
+              >
 
+                {/* IMAGE */}
 
-              {/* IMAGE */}
+                <div className="cart-item-image">
 
-              <div className="cart-item-image">
-
-                <img
-                  src={
-                    Array.isArray(item.image)
-                      ? item.image[0]
-                      : item.image
-                  }
-                  alt={item.name}
-                />
-
-              </div>
-
-
-
-              {/* INFORMATION */}
-
-              <div className="cart-item-info">
-
-
-                <h2>
-                  {item.name}
-                </h2>
-
-
-                <p>
-                  Size:{" "}
-                  <strong>
-                    {item.size}
-                  </strong>
-                </p>
-
-
-                <p className="cart-color-row">
-
-                  Color:
-
-                  <span
-                    className="cart-color"
-                    style={{
-                      backgroundColor:
-                        item.color || "#000",
-                    }}
+                  <img
+                    src={
+                      Array.isArray(item.image)
+                        ? item.image[0]
+                        : item.image
+                    }
+                    alt={item.name}
                   />
 
-                </p>
+                </div>
 
+                {/* INFORMATION */}
 
-                <strong className="cart-item-price">
-                  ${Number(item.price).toFixed(2)}
-                </strong>
+                <div className="cart-item-info">
 
+                  <h2>
+                    {item.name}
+                  </h2>
 
+                  {/* SIZE */}
 
-                {/* BOTTOM */}
+                  {item.selectedSize && (
+                    <p>
+                      Size:{" "}
+                      <strong>
+                        {item.selectedSize}
+                      </strong>
+                    </p>
+                  )}
 
-                <div className="cart-bottom">
+                  {/* COLOR */}
 
+                  {item.selectedColor && (
+                    <p className="cart-color-row">
 
-                  {/* QUANTITY */}
+                      Color:
 
-                  <div className="cart-quantity">
+                      <span
+                        className="cart-color"
+                        style={{
+                          backgroundColor:
+                            item.selectedColor,
+                        }}
+                      />
+
+                    </p>
+                  )}
+
+                  {/* PRICE */}
+
+                  <strong className="cart-item-price">
+                    ${Number(item.price || 0).toFixed(2)}
+                  </strong>
+
+                  {/* BOTTOM */}
+
+                  <div className="cart-bottom">
+
+                    {/* QUANTITY */}
+
+                    <div className="cart-quantity">
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateQuantity(
+                            itemId,
+                            item.quantity - 1,
+                            item.selectedSize,
+                            item.selectedColor
+                          )
+                        }
+                      >
+                        −
+                      </button>
+
+                      <span>
+                        {item.quantity}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateQuantity(
+                            itemId,
+                            item.quantity + 1,
+                            item.selectedSize,
+                            item.selectedColor
+                          )
+                        }
+                      >
+                        +
+                      </button>
+
+                    </div>
+
+                    {/* REMOVE */}
 
                     <button
                       type="button"
+                      className="remove-cart"
                       onClick={() =>
-                        updateQuantity(
-                          item.id,
-                          item.size,
-                          item.color,
-                          item.quantity - 1
+                        removeFromCart(
+                          itemId,
+                          item.selectedSize,
+                          item.selectedColor
                         )
                       }
                     >
-                      −
-                    </button>
-
-
-                    <span>
-                      {item.quantity}
-                    </span>
-
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        updateQuantity(
-                          item.id,
-                          item.size,
-                          item.color,
-                          item.quantity + 1
-                        )
-                      }
-                    >
-                      +
+                      Remove
                     </button>
 
                   </div>
 
-
-
-                  {/* REMOVE */}
-
-                  <button
-                    type="button"
-                    className="remove-cart"
-                    onClick={() =>
-                      removeFromCart(
-                        item.id,
-                        item.size,
-                        item.color
-                      )
-                    }
-                  >
-                    Remove
-                  </button>
-
                 </div>
 
               </div>
-
-            </div>
-
-          ))}
-
-
+            );
+          })}
 
           {/* CLEAR CART */}
 
@@ -252,20 +226,15 @@ const Cart = () => {
 
         </section>
 
-
-
         {/* =========================
             ORDER SUMMARY
         ========================= */}
 
         <aside className="cart-summary">
 
-
           <h2>
             Order Summary
           </h2>
-
-
 
           {/* SUBTOTAL */}
 
@@ -281,8 +250,6 @@ const Cart = () => {
 
           </div>
 
-
-
           {/* DELIVERY */}
 
           <div className="summary-row">
@@ -297,11 +264,7 @@ const Cart = () => {
 
           </div>
 
-
-
-          <div className="summary-line"></div>
-
-
+          <div className="summary-line" />
 
           {/* TOTAL */}
 
@@ -317,16 +280,12 @@ const Cart = () => {
 
           </div>
 
-
-
           {/* CHECKOUT */}
 
           <button
             type="button"
             className="checkout-button"
-            onClick={() =>
-              navigate("/checkout")
-            }
+            onClick={() => navigate("/checkout")}
           >
             Go to Checkout →
           </button>

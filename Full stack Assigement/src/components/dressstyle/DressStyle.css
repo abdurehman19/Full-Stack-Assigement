@@ -6,16 +6,15 @@
     width: 94%;
     max-width: 1200px;
 
-    margin: 40px auto;
+    margin: 45px auto;
 
-    padding: 38px 30px 35px;
+    padding: 40px 35px 35px;
 
-    background-color: #f0f0f0;
+    background: #f0f0f0;
 
     border-radius: 20px;
 
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -24,16 +23,29 @@
 ========================= */
 
 .dress-style h2 {
-    margin: 0 0 28px;
+    margin: 0 0 25px;
 
     text-align: center;
 
     color: #000;
 
+    font-family: Arial, Helvetica, sans-serif;
+
     font-size: 24px;
     font-weight: 900;
 
-    letter-spacing: -1px;
+    line-height: 1.2;
+
+    letter-spacing: -0.8px;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.dress-grid {
+    width: 100%;
 }
 
 
@@ -63,20 +75,22 @@
 .dress-card {
     position: relative;
 
-    height: 135px;
+    height: 150px;
 
     overflow: hidden;
 
-    background-color: #fff;
+    background: #fff;
 
     border-radius: 10px;
+
+    box-sizing: border-box;
 }
 
 
 /* =========================
    TOP ROW
-   Casual SMALL
-   Formal BIG
+   Casual = SMALL
+   Formal = BIG
 ========================= */
 
 .dress-row:first-child .dress-card:first-child {
@@ -90,8 +104,8 @@
 
 /* =========================
    BOTTOM ROW
-   Party BIG
-   Gym SMALL
+   Party = BIG
+   Gym = SMALL
 ========================= */
 
 .dress-row:last-child .dress-card:first-child {
@@ -104,14 +118,14 @@
 
 
 /* =========================
-   TITLE
+   CARD TITLE
 ========================= */
 
 .dress-card h3 {
     position: absolute;
 
-    top: 12px;
-    left: 16px;
+    top: 15px;
+    left: 18px;
 
     z-index: 2;
 
@@ -122,8 +136,9 @@
     font-family: Arial, Helvetica, sans-serif;
 
     font-size: 16px;
-
     font-weight: 600;
+
+    line-height: 1;
 }
 
 
@@ -132,14 +147,25 @@
 ========================= */
 
 .dress-card img {
+    display: block;
+
     width: 100%;
     height: 100%;
-
-    display: block;
 
     object-fit: cover;
 
     object-position: center;
+
+    transition: transform 0.3s ease;
+}
+
+
+/* =========================
+   HOVER
+========================= */
+
+.dress-card:hover img {
+    transform: scale(1.02);
 }
 
 
@@ -152,15 +178,17 @@
     .dress-style {
         width: 92%;
 
-        margin: 30px auto;
+        margin: 35px auto;
 
-        padding: 30px 18px;
+        padding: 30px 22px 25px;
+
+        border-radius: 18px;
     }
 
     .dress-style h2 {
         font-size: 21px;
 
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
 
     .dress-row {
@@ -170,11 +198,13 @@
     }
 
     .dress-card {
-        height: 115px;
+        height: 120px;
+
+        border-radius: 9px;
     }
 
     .dress-card h3 {
-        top: 10px;
+        top: 12px;
         left: 14px;
 
         font-size: 14px;
@@ -189,11 +219,11 @@
 @media (max-width: 480px) {
 
     .dress-style {
-        width: 90%;
+        width: 92%;
 
         margin: 25px auto;
 
-        padding: 28px 12px;
+        padding: 25px 12px 15px;
 
         border-radius: 15px;
     }
@@ -201,15 +231,15 @@
     .dress-style h2 {
         font-size: 18px;
 
-        margin-bottom: 20px;
+        margin-bottom: 18px;
 
-        letter-spacing: -0.5px;
+        letter-spacing: -0.4px;
     }
 
     .dress-row {
-        gap: 8px;
+        gap: 7px;
 
-        margin-bottom: 8px;
+        margin-bottom: 7px;
     }
 
     .dress-card {
@@ -219,8 +249,8 @@
     }
 
     .dress-card h3 {
-        top: 9px;
-        left: 12px;
+        top: 10px;
+        left: 11px;
 
         font-size: 13px;
     }
@@ -234,31 +264,35 @@
 @media (max-width: 360px) {
 
     .dress-style {
-        width: 92%;
+        width: 94%;
 
-        padding: 24px 10px;
+        padding: 22px 9px 12px;
+
+        border-radius: 13px;
     }
 
     .dress-style h2 {
-        font-size: 17px;
+        font-size: 16px;
 
-        margin-bottom: 17px;
+        margin-bottom: 15px;
     }
 
     .dress-row {
-        gap: 7px;
+        gap: 6px;
 
-        margin-bottom: 7px;
+        margin-bottom: 6px;
     }
 
     .dress-card {
-        height: 90px;
+        height: 88px;
+
+        border-radius: 7px;
     }
 
     .dress-card h3 {
         top: 8px;
-        left: 10px;
+        left: 9px;
 
-        font-size: 12px;
+        font-size: 11px;
     }
 }

@@ -30,16 +30,21 @@ const Shop = () => {
 
         const response = await fetch(API_URL);
 
-        if (!response.ok) {
-          throw new Error("Products load nahi huay.");
-        }
-
         const data = await response.json();
 
-        setProducts(data.products || data);
+        if (!response.ok) {
+          throw new Error(
+            data.message || "Products load nahi huay."
+          );
+        }
+
+        setProducts(data.products || data || []);
       } catch (err) {
         console.error("Shop products error:", err);
-        setError("Products load nahi ho sake.");
+
+        setError(
+          err.message || "Products load nahi ho sakay."
+        );
       } finally {
         setLoading(false);
       }
@@ -138,7 +143,8 @@ const Shop = () => {
 
     // Price
     result = result.filter(
-      (product) => Number(product.price) <= maxPrice
+      (product) =>
+        Number(product.price) <= maxPrice
     );
 
     // Color
@@ -149,7 +155,11 @@ const Shop = () => {
         }
 
         return product.colors.some((color) =>
-          selectedColors.includes(color)
+          selectedColors.some(
+            (selectedColor) =>
+              color.toLowerCase() ===
+              selectedColor.toLowerCase()
+          )
         );
       });
     }
@@ -170,19 +180,23 @@ const Shop = () => {
     // Sorting
     if (sortBy === "Price: Low to High") {
       result.sort(
-        (a, b) => Number(a.price) - Number(b.price)
+        (a, b) =>
+          Number(a.price) - Number(b.price)
       );
     }
 
     if (sortBy === "Price: High to Low") {
       result.sort(
-        (a, b) => Number(b.price) - Number(a.price)
+        (a, b) =>
+          Number(b.price) - Number(a.price)
       );
     }
 
     if (sortBy === "Rating") {
       result.sort(
-        (a, b) => Number(b.rating) - Number(a.rating)
+        (a, b) =>
+          Number(b.rating || 0) -
+          Number(a.rating || 0)
       );
     }
 
@@ -207,10 +221,11 @@ const Shop = () => {
   const startIndex =
     (currentPage - 1) * productsPerPage;
 
-  const visibleProducts = filteredProducts.slice(
-    startIndex,
-    startIndex + productsPerPage
-  );
+  const visibleProducts =
+    filteredProducts.slice(
+      startIndex,
+      startIndex + productsPerPage
+    );
 
   // =========================
   // CLEAR FILTERS
@@ -232,39 +247,44 @@ const Shop = () => {
   if (loading) {
     return (
       <main className="shop-page">
-        <div className="shop-breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <strong>Shop</strong>
+
+        <div className="shop-loading">
+          <h2>Loading products...</h2>
+          <p>Please wait.</p>
         </div>
 
-        <div className="no-products">
-          <h2>Loading Products...</h2>
-        </div>
       </main>
     );
   }
 
   // =========================
-  // ERROR
+  // API ERROR
   // =========================
 
   if (error) {
     return (
       <main className="shop-page">
-        <div className="shop-breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <strong>Shop</strong>
-        </div>
 
         <div className="no-products">
-          <h2>{error}</h2>
 
-          <button onClick={() => window.location.reload()}>
+          <h2>
+            Products Load Nahi Huay
+          </h2>
+
+          <p>
+            {error}
+          </p>
+
+          <button
+            onClick={() =>
+              window.location.reload()
+            }
+          >
             Try Again
           </button>
+
         </div>
+
       </main>
     );
   }
@@ -277,10 +297,19 @@ const Shop = () => {
       ========================= */}
 
       <div className="shop-breadcrumb">
-        <Link to="/">Home</Link>
+
+        <Link to="/">
+          Home
+        </Link>
+
         <span>/</span>
-        <strong>Shop</strong>
+
+        <strong>
+          Shop
+        </strong>
+
       </div>
+
 
       {/* =========================
           SHOP LAYOUT
@@ -295,7 +324,10 @@ const Shop = () => {
         <aside className="shop-filters">
 
           <div className="filter-title-row">
-            <h3>Filters</h3>
+
+            <h3>
+              Filters
+            </h3>
 
             <button
               onClick={clearFilters}
@@ -303,15 +335,20 @@ const Shop = () => {
             >
               Clear
             </button>
+
           </div>
+
 
           {/* Categories */}
 
           <div className="filter-section">
 
-            <h4>Categories</h4>
+            <h4>
+              Categories
+            </h4>
 
             {categories.map((category) => (
+
               <button
                 key={category}
                 className={
@@ -324,22 +361,40 @@ const Shop = () => {
                   setCurrentPage(1);
                 }}
               >
-                <span>{category}</span>
-                <span>›</span>
+
+                <span>
+                  {category}
+                </span>
+
+                <span>
+                  ›
+                </span>
+
               </button>
+
             ))}
 
           </div>
+
 
           {/* Price */}
 
           <div className="filter-section">
 
-            <h4>Price</h4>
+            <h4>
+              Price
+            </h4>
 
             <div className="price-values">
-              <span>$0</span>
-              <span>${maxPrice}</span>
+
+              <span>
+                $0
+              </span>
+
+              <span>
+                ${maxPrice}
+              </span>
+
             </div>
 
             <input
@@ -348,7 +403,10 @@ const Shop = () => {
               max="500"
               value={maxPrice}
               onChange={(e) => {
-                setMaxPrice(Number(e.target.value));
+                setMaxPrice(
+                  Number(e.target.value)
+                );
+
                 setCurrentPage(1);
               }}
               className="price-range"
@@ -356,45 +414,59 @@ const Shop = () => {
 
           </div>
 
+
           {/* Colors */}
 
           <div className="filter-section">
 
-            <h4>Colors</h4>
+            <h4>
+              Colors
+            </h4>
 
             <div className="color-filter-grid">
 
               {colors.map((color) => (
+
                 <button
                   key={color.name}
                   title={color.name}
                   className={
-                    selectedColors.includes(color.value)
+                    selectedColors.includes(
+                      color.value
+                    )
                       ? "filter-color selected"
                       : "filter-color"
                   }
                   style={{
-                    backgroundColor: color.value,
+                    backgroundColor:
+                      color.value,
                   }}
                   onClick={() =>
-                    toggleColor(color.value)
+                    toggleColor(
+                      color.value
+                    )
                   }
                 />
+
               ))}
 
             </div>
 
           </div>
 
+
           {/* Sizes */}
 
           <div className="filter-section">
 
-            <h4>Size</h4>
+            <h4>
+              Size
+            </h4>
 
             <div className="size-filter-grid">
 
               {sizes.map((size) => (
+
                 <button
                   key={size}
                   className={
@@ -408,44 +480,56 @@ const Shop = () => {
                 >
                   {size}
                 </button>
+
               ))}
 
             </div>
 
           </div>
 
+
           {/* Dress Style */}
 
           <div className="filter-section">
 
-            <h4>Dress Style</h4>
+            <h4>
+              Dress Style
+            </h4>
 
             <button className="dress-style">
-              Casual <span>›</span>
+              Casual
+              <span>›</span>
             </button>
 
             <button className="dress-style">
-              Formal <span>›</span>
+              Formal
+              <span>›</span>
             </button>
 
             <button className="dress-style">
-              Party <span>›</span>
+              Party
+              <span>›</span>
             </button>
 
             <button className="dress-style">
-              Gym <span>›</span>
+              Gym
+              <span>›</span>
             </button>
 
           </div>
 
+
           <button
             className="apply-filter"
-            onClick={() => setCurrentPage(1)}
+            onClick={() =>
+              setCurrentPage(1)
+            }
           >
             Apply Filter
           </button>
 
         </aside>
+
 
         {/* =========================
             PRODUCTS AREA
@@ -466,36 +550,65 @@ const Shop = () => {
               </h1>
 
               <p>
-                {filteredProducts.length > 0
-                  ? `Showing ${startIndex + 1}-${Math.min(
-                      startIndex + productsPerPage,
+
+                {filteredProducts.length === 0
+                  ? "0 Products"
+                  : `Showing ${
+                      startIndex + 1
+                    }-${Math.min(
+                      startIndex +
+                        productsPerPage,
                       filteredProducts.length
-                    )} of ${filteredProducts.length} Products`
-                  : "0 Products"}
+                    )} of ${
+                      filteredProducts.length
+                    } Products`}
+
               </p>
 
             </div>
 
+
+            {/* Sort */}
+
             <div className="sort-box">
 
-              <span>Sort by</span>
+              <span>
+                Sort by
+              </span>
 
               <select
                 value={sortBy}
                 onChange={(e) => {
-                  setSortBy(e.target.value);
+                  setSortBy(
+                    e.target.value
+                  );
+
                   setCurrentPage(1);
                 }}
               >
-                <option>Most Popular</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Rating</option>
+
+                <option>
+                  Most Popular
+                </option>
+
+                <option>
+                  Price: Low to High
+                </option>
+
+                <option>
+                  Price: High to Low
+                </option>
+
+                <option>
+                  Rating
+                </option>
+
               </select>
 
             </div>
 
           </div>
+
 
           {/* Product Grid */}
 
@@ -503,71 +616,93 @@ const Shop = () => {
 
             <div className="shop-product-grid">
 
-              {visibleProducts.map((product) => {
+              {visibleProducts.map(
+                (product) => {
 
-                const image = Array.isArray(product.image)
-                  ? product.image[0]
-                  : product.image;
+                  const productId =
+                    product._id ||
+                    product.id;
 
-                return (
-                  <Link
-                    to={`/product/${product._id}`}
-                    className="shop-product-card"
-                    key={product._id}
-                  >
+                  const image =
+                    Array.isArray(
+                      product.image
+                    )
+                      ? product.image[0]
+                      : product.image;
 
-                    <div className="shop-product-image">
+                  return (
 
-                      <img
-                        src={image}
-                        alt={product.name}
-                      />
+                    <Link
+                      to={`/product/${productId}`}
+                      className="shop-product-card"
+                      key={productId}
+                    >
 
-                    </div>
+                      <div className="shop-product-image">
 
-                    <h3>
-                      {product.name}
-                    </h3>
+                        <img
+                          src={image}
+                          alt={product.name}
+                          onError={(e) => {
+                            e.currentTarget.style.display =
+                              "none";
+                          }}
+                        />
 
-                    <div className="shop-rating">
+                      </div>
 
-                      <span>
-                        ★★★★★
-                      </span>
 
-                      <small>
-                        {product.rating}/5
-                      </small>
+                      <h3>
+                        {product.name}
+                      </h3>
 
-                      <small>
-                        ({product.reviews})
-                      </small>
 
-                    </div>
+                      <div className="shop-rating">
 
-                    <div className="shop-price">
-
-                      <strong>
-                        ${product.price}
-                      </strong>
-
-                      {product.oldPrice && (
-                        <del>
-                          ${product.oldPrice}
-                        </del>
-                      )}
-
-                      {product.discount && (
                         <span>
-                          -{product.discount}%
+                          ★★★★★
                         </span>
-                      )}
 
-                    </div>
+                        <small>
+                          {product.rating || 0}/5
+                        </small>
 
-                  </Link>
-                );
-              })}
+                        <small>
+                          ({product.reviews || 0})
+                        </small>
+
+                      </div>
+
+
+                      <div className="shop-price">
+
+                        <strong>
+                          ${product.price}
+                        </strong>
+
+                        {product.oldPrice && (
+                          <del>
+                            ${product.oldPrice}
+                          </del>
+                        )}
+
+                        {product.discount && (
+                          <span>
+                            {String(
+                              product.discount
+                            ).includes("%")
+                              ? product.discount
+                              : `-${product.discount}%`}
+                          </span>
+                        )}
+
+                      </div>
+
+                    </Link>
+
+                  );
+                }
+              )}
 
             </div>
 
@@ -575,19 +710,24 @@ const Shop = () => {
 
             <div className="no-products">
 
-              <h2>No Products Found</h2>
+              <h2>
+                No Products Found
+              </h2>
 
               <p>
                 Try changing your filters.
               </p>
 
-              <button onClick={clearFilters}>
+              <button
+                onClick={clearFilters}
+              >
                 Clear Filters
               </button>
 
             </div>
 
           )}
+
 
           {/* Pagination */}
 
@@ -596,19 +736,27 @@ const Shop = () => {
             <div className="pagination">
 
               <button
-                disabled={currentPage === 1}
+                disabled={
+                  currentPage === 1
+                }
                 onClick={() =>
-                  setCurrentPage((page) => page - 1)
+                  setCurrentPage(
+                    (page) => page - 1
+                  )
                 }
               >
                 ← Previous
               </button>
 
+
               <div className="page-numbers">
 
                 {Array.from(
-                  { length: totalPages },
-                  (_, index) => index + 1
+                  {
+                    length: totalPages,
+                  },
+                  (_, index) =>
+                    index + 1
                 ).map((page) => (
 
                   <button
@@ -629,10 +777,15 @@ const Shop = () => {
 
               </div>
 
+
               <button
-                disabled={currentPage === totalPages}
+                disabled={
+                  currentPage === totalPages
+                }
                 onClick={() =>
-                  setCurrentPage((page) => page + 1)
+                  setCurrentPage(
+                    (page) => page + 1
+                  )
                 }
               >
                 Next →

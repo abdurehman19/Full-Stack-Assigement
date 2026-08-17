@@ -4,15 +4,13 @@ import { useCart } from "../../components/pages/CartContext";
 import "./Checkout.css";
 
 const Checkout = () => {
-
   const navigate = useNavigate();
 
   const {
-    cart,
+    cartItems,
     cartTotal,
     clearCart,
   } = useCart();
-
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -24,63 +22,46 @@ const Checkout = () => {
     postalCode: "",
   });
 
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
-  const [paymentMethod, setPaymentMethod] =
-    useState("cash");
-
-
-  const [orderPlaced, setOrderPlaced] =
-    useState(false);
-
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const delivery = 15;
 
   const total = cartTotal + delivery;
-
 
   // =========================
   // HANDLE INPUT
   // =========================
 
   const handleChange = (e) => {
-
-    const {
-      name,
-      value,
-    } = e.target;
+    const { name, value } = e.target;
 
     setFormData({
       ...formData,
       [name]: value,
     });
-
   };
-
 
   // =========================
   // PLACE ORDER
   // =========================
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
 
     setOrderPlaced(true);
 
     clearCart();
-
   };
-
 
   // =========================
   // EMPTY CART
   // =========================
 
-  if (cart.length === 0 && !orderPlaced) {
-
+  if (cartItems.length === 0 && !orderPlaced) {
     return (
       <main className="checkout-page">
-
         <div className="empty-checkout">
 
           <h1>
@@ -97,18 +78,15 @@ const Checkout = () => {
           </Link>
 
         </div>
-
       </main>
     );
   }
-
 
   // =========================
   // ORDER SUCCESS
   // =========================
 
   if (orderPlaced) {
-
     return (
       <main className="checkout-page">
 
@@ -139,10 +117,8 @@ const Checkout = () => {
     );
   }
 
-
   return (
     <main className="checkout-page">
-
 
       {/* =========================
           BREADCRUMB
@@ -168,16 +144,11 @@ const Checkout = () => {
 
       </div>
 
-
-
       <h1>
         Checkout
       </h1>
 
-
-
       <div className="checkout-layout">
-
 
         {/* =========================
             CHECKOUT FORM
@@ -188,7 +159,6 @@ const Checkout = () => {
           onSubmit={handleSubmit}
         >
 
-
           {/* CUSTOMER INFORMATION */}
 
           <section className="checkout-section">
@@ -196,7 +166,6 @@ const Checkout = () => {
             <h2>
               Contact Information
             </h2>
-
 
             <div className="form-group">
 
@@ -214,7 +183,6 @@ const Checkout = () => {
               />
 
             </div>
-
 
             <div className="form-group">
 
@@ -235,8 +203,6 @@ const Checkout = () => {
 
           </section>
 
-
-
           {/* SHIPPING ADDRESS */}
 
           <section className="checkout-section">
@@ -244,7 +210,6 @@ const Checkout = () => {
             <h2>
               Shipping Address
             </h2>
-
 
             <div className="form-row">
 
@@ -265,7 +230,6 @@ const Checkout = () => {
 
               </div>
 
-
               <div className="form-group">
 
                 <label>
@@ -285,7 +249,6 @@ const Checkout = () => {
 
             </div>
 
-
             <div className="form-group">
 
               <label>
@@ -302,7 +265,6 @@ const Checkout = () => {
               />
 
             </div>
-
 
             <div className="form-row">
 
@@ -322,7 +284,6 @@ const Checkout = () => {
                 />
 
               </div>
-
 
               <div className="form-group">
 
@@ -345,8 +306,6 @@ const Checkout = () => {
 
           </section>
 
-
-
           {/* PAYMENT */}
 
           <section className="checkout-section">
@@ -355,19 +314,14 @@ const Checkout = () => {
               Payment Method
             </h2>
 
-
             <label className="payment-option">
 
               <input
                 type="radio"
                 name="payment"
                 value="cash"
-                checked={
-                  paymentMethod === "cash"
-                }
-                onChange={() =>
-                  setPaymentMethod("cash")
-                }
+                checked={paymentMethod === "cash"}
+                onChange={() => setPaymentMethod("cash")}
               />
 
               <span>
@@ -376,19 +330,14 @@ const Checkout = () => {
 
             </label>
 
-
             <label className="payment-option">
 
               <input
                 type="radio"
                 name="payment"
                 value="card"
-                checked={
-                  paymentMethod === "card"
-                }
-                onChange={() =>
-                  setPaymentMethod("card")
-                }
+                checked={paymentMethod === "card"}
+                onChange={() => setPaymentMethod("card")}
               />
 
               <span>
@@ -397,19 +346,14 @@ const Checkout = () => {
 
             </label>
 
-
             <label className="payment-option">
 
               <input
                 type="radio"
                 name="payment"
                 value="bank"
-                checked={
-                  paymentMethod === "bank"
-                }
-                onChange={() =>
-                  setPaymentMethod("bank")
-                }
+                checked={paymentMethod === "bank"}
+                onChange={() => setPaymentMethod("bank")}
               />
 
               <span>
@@ -420,7 +364,6 @@ const Checkout = () => {
 
           </section>
 
-
           <button
             type="submit"
             className="place-order-button"
@@ -429,8 +372,6 @@ const Checkout = () => {
           </button>
 
         </form>
-
-
 
         {/* =========================
             ORDER SUMMARY
@@ -442,62 +383,69 @@ const Checkout = () => {
             Your Order
           </h2>
 
-
           <div className="checkout-products">
 
-            {cart.map((item) => (
+            {cartItems.map((item) => {
 
-              <div
-                className="checkout-product"
-                key={`${item.id}-${item.size}-${item.color}`}
-              >
+              const itemId = item.id || item._id;
 
-                <div className="checkout-product-image">
+              return (
+                <div
+                  className="checkout-product"
+                  key={`${itemId}-${item.selectedSize}-${item.selectedColor}`}
+                >
 
-                  <img
-                    src={
-                      Array.isArray(item.image)
-                        ? item.image[0]
-                        : item.image
-                    }
-                    alt={item.name}
-                  />
+                  <div className="checkout-product-image">
 
-                  <span>
-                    {item.quantity}
-                  </span>
+                    <img
+                      src={
+                        Array.isArray(item.image)
+                          ? item.image[0]
+                          : item.image
+                      }
+                      alt={item.name}
+                    />
+
+                    <span>
+                      {item.quantity}
+                    </span>
+
+                  </div>
+
+                  <div className="checkout-product-info">
+
+                    <h3>
+                      {item.name}
+                    </h3>
+
+                    {item.selectedSize && (
+                      <p>
+                        Size: {item.selectedSize}
+                      </p>
+                    )}
+
+                    {item.selectedColor && (
+                      <p>
+                        Color: {item.selectedColor}
+                      </p>
+                    )}
+
+                    <strong>
+                      ${(
+                        Number(item.price || 0) *
+                        Number(item.quantity || 1)
+                      ).toFixed(2)}
+                    </strong>
+
+                  </div>
 
                 </div>
-
-
-                <div className="checkout-product-info">
-
-                  <h3>
-                    {item.name}
-                  </h3>
-
-                  <p>
-                    Size: {item.size}
-                  </p>
-
-                  <strong>
-                    ${(
-                      Number(item.price) *
-                      Number(item.quantity)
-                    ).toFixed(2)}
-                  </strong>
-
-                </div>
-
-              </div>
-
-            ))}
+              );
+            })}
 
           </div>
 
-
-          <div className="checkout-summary-line"></div>
-
+          <div className="checkout-summary-line" />
 
           <div className="checkout-summary-row">
 
@@ -511,7 +459,6 @@ const Checkout = () => {
 
           </div>
 
-
           <div className="checkout-summary-row">
 
             <span>
@@ -523,7 +470,6 @@ const Checkout = () => {
             </strong>
 
           </div>
-
 
           <div className="checkout-total">
 
