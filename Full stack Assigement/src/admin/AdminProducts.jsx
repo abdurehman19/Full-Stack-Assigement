@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FiSearch, FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import "./AdminProducts.css";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://full-stack-assignment-backend.vercel.app/admin/products";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);

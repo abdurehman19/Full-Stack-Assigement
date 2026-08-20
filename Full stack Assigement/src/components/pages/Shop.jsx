@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Shop.css";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://full-stack-assignment-backend.vercel.app/api/products";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);

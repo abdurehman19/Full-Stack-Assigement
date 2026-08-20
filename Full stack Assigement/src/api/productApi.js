@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://full-stack-assignment-backend.vercel.app/api/products";
 
 
 // Get all products

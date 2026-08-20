@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./NewArrivals.css";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://full-stack-assignment-backend.vercel.app/api/products";
 
 const ProductCard = ({ product }) => {
   const image = Array.isArray(product.image)

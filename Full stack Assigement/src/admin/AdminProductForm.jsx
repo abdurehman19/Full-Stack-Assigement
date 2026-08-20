@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AdminProductForm.css";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "https://full-stack-assignment-backend.vercel.app/api/products";
 
 const AdminProductForm = () => {
   const { id } = useParams();
