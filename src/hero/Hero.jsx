@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import "./Hero.css";
 
+import HeroImage from "../assets/images/hero.png";
+
 const Hero = () => {
   return (
     <section className="hero">
@@ -51,7 +53,7 @@ const Hero = () => {
       <div className="hero-image">
 
         <img
-          src="src/assets/images/hero.png"
+          src={HeroImage}
           alt="Fashion models"
         />
 
