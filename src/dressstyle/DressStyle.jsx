@@ -1,10 +1,9 @@
-import React from "react";
 import "./DressStyle.css";
 
-import Casual from "../../assets/dress style/image 11.png";
-import Formal from "../../assets/dress style/image 13.png";
-import Party from "../../assets/dress style/image 12.png";
-import Gym from "../../assets/dress style/image 14.png";
+import Casual from "../assets/dress style/image 11.png";
+import Formal from "../assets/dress style/image 13.png";
+import Party from "../assets/dress style/image 12.png";
+import Gym from "../assets/dress style/image 14.png";
 
 function DressCard({ title, image, className }) {
   return (

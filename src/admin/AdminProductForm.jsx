@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./AdminProductForm.css";
 
@@ -34,7 +34,6 @@ const AdminProductForm = () => {
 
   useEffect(() => {
     if (!isEdit) {
-      setLoading(false);
       return;
     }
 

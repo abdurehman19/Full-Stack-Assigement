@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSearch, FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
 import "./AdminProducts.css";
@@ -39,7 +39,7 @@ const AdminProducts = () => {
   };
 
   useEffect(() => {
-    loadProducts();
+    Promise.resolve().then(loadProducts);
   }, []);
 
 

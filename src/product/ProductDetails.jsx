@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useCart } from "../pages/CartContext";
+import { useCart } from "../pages/useCart";
 import "./ProductDetails.css";
 
 const API_URL = "https://full-stack-assignment-backend.vercel.app/api/products";
@@ -63,8 +63,6 @@ const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
   const [visibleReviews, setVisibleReviews] = useState(4);
 
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [newsletterMessage, setNewsletterMessage] = useState("");
 
   // ==========================================
   // FETCH PRODUCT
@@ -258,25 +256,6 @@ const ProductDetails = () => {
 
   const increaseQuantity = () => {
     setQuantity((current) => current + 1);
-  };
-
-  // ==========================================
-  // NEWSLETTER
-  // ==========================================
-
-  const handleNewsletter = (e) => {
-    e.preventDefault();
-
-    if (!newsletterEmail.trim()) {
-      setNewsletterMessage("Please enter your email.");
-      return;
-    }
-
-    setNewsletterMessage(
-      "Thanks! You are subscribed."
-    );
-
-    setNewsletterEmail("");
   };
 
   // ==========================================

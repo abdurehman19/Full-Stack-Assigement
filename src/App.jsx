@@ -1,18 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./components/pages/Home";
-import Shop from "./components/pages/Shop";
-import Cart from "./components/pages/Cart";
+import Home from "./pages/Home";
+import Shop from "./pages/Shop";
+import Cart from "./pages/Cart";
 
-import AnnouncementBar from "./components/topbar/AnnouncementBar";
-import Navbar from "./components/navbar/Navbar";
+import AnnouncementBar from "./topbar/AnnouncementBar";
+import Navbar from "./navbar/Navbar";
 
-import ProductDetails from "./components/product/ProductDetails";
+import ProductDetails from "./product/ProductDetails";
 
-import { CartProvider } from "./components/pages/CartContext";
-import Newsletter from "./components/newsletter/Newsletter";
-import Footer from "./components/footer/Footer";
-import Checkout from "./components/checkout/Checkout";
+import { CartProvider } from "./pages/CartContext.jsx";
+import Newsletter from "./newsletter/Newsletter";
+import Footer from "./footer/Footer";
+import Checkout from "./checkout/Checkout";
 import AdminProducts from "./admin/AdminProducts";
 import AdminProductForm from "./admin/AdminProductForm";
 

@@ -1,9 +1,8 @@
-import React from "react";
-import Versace from "../../assets/marque images/versace.png";
-import Zara from "../../assets/marque images/zara.png";
-import Gucci from "../../assets/marque images/gucci.png";
-import Prada from "../../assets/marque images/prada.png";
-import Kelvin from "../../assets/marque images/kelvin.png";
+import Versace from "../assets/marque images/versace.png";
+import Zara from "../assets/marque images/zara.png";
+import Gucci from "../assets/marque images/gucci.png";
+import Prada from "../assets/marque images/prada.png";
+import Kelvin from "../assets/marque images/kelvin.png";
 
 import "./Marque.css";
 

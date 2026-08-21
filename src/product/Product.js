@@ -1,7 +1,7 @@
 
-import tshirt2 from "../../assets/product/t shirt 2.jpeg";
-import tshirt3 from "../../assets/product/t shirt 3.jpeg";
-import tshirt4 from "../../assets/product/t shirt 4.jpeg";
+import tshirt2 from "../assets/product/t shirt 2.jpeg";
+import tshirt3 from "../assets/product/t shirt 3.jpeg";
+import tshirt4 from "../assets/product/t shirt 4.jpeg";
 
 const products = [
   {

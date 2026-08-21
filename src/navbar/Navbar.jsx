@@ -9,7 +9,7 @@ import {
   FiX,
 } from "react-icons/fi";
 
-import { useCart } from "../../components/pages/CartContext";
+import { useCart } from "../pages/useCart";
 
 import "./Navbar.css";
 
